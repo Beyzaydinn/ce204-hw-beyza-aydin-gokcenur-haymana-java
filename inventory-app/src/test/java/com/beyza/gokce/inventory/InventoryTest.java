@@ -1,10 +1,10 @@
 /**
 
-@file CalculatorTest.java
-@brief This file contains the test cases for the Calculator class.
-@details This file includes test methods to validate the functionality of the Calculator class. It uses JUnit for unit testing.
+@file InventoryTest.java
+@brief This file contains the test cases for the Inventory class.
+@details This file includes test methods to validate the functionality of the Inventory class. It uses JUnit for unit testing.
 */
-package com.ucoruh.calculator;
+package com.beyza.gokce.inventory;
 
 import static org.junit.Assert.*;
 
@@ -14,14 +14,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.beyza.gokce.inventory.Inventory;
+
 /**
 
-@class CalculatorTest
-@brief This class represents the test class for the Calculator class.
-@details The CalculatorTest class provides test methods to verify the behavior of the Calculator class. It includes test methods for addition, subtraction, multiplication, and division operations.
+@class InventoryTest
+@brief This class represents the test class for the Inventory class.
+@details The InventoryTest class provides test methods to verify the behavior of the Inventory class. It includes test methods for addition, subtraction, multiplication, and division operations.
 @author ugur.coruh
 */
-public class CalculatorTest {
+public class InventoryTest {
 
   /**
    * @brief This method is executed once before all test methods.
@@ -58,12 +60,12 @@ public class CalculatorTest {
   /**
    * @brief Test method to validate the addition operation.
    *
-   * @details This method creates an instance of the Calculator class and calls the `add` method with two integers. It asserts the expected result of the addition operation.
+   * @details This method creates an instance of the Inventory class and calls the `add` method with two integers. It asserts the expected result of the addition operation.
    */
   @Test
   public void testAddition() {
-    Calculator calculator = new Calculator();
-    int result = calculator.add(2, 3);
+    Inventory inventory = new Inventory();
+    int result = inventory.add(2, 3);
     assertEquals(5, result);
   }
 

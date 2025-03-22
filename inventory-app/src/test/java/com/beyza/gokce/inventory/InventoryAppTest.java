@@ -1,10 +1,10 @@
 /**
 
-@file CalculatorAppTest.java
-@brief This file contains the test cases for the CalculatorApp class.
-@details This file includes test methods to validate the functionality of the CalculatorApp class. It uses JUnit for unit testing.
+@file InventoryAppTest.java
+@brief This file contains the test cases for the InventoryApp class.
+@details This file includes test methods to validate the functionality of the InventoryApp class. It uses JUnit for unit testing.
 */
-package com.ucoruh.calculator;
+package com.beyza.gokce.inventory;
 
 import static org.junit.Assert.*;
 
@@ -19,15 +19,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.beyza.gokce.inventory.InventoryApp;
+
 
 /**
 
-@class CalculatorAppTest
-@brief This class represents the test class for the CalculatorApp class.
-@details The CalculatorAppTest class provides test methods to verify the behavior of the CalculatorApp class. It includes test methods for successful execution, object creation, and error handling scenarios.
+@class InventoryAppTest
+@brief This class represents the test class for the InventoryApp class.
+@details The InventoryAppTest class provides test methods to verify the behavior of the InventoryApp class. It includes test methods for successful execution, object creation, and error handling scenarios.
 @author ugur.coruh
 */
-public class CalculatorAppTest {
+public class InventoryAppTest {
 
   /**
    * @brief This method is executed once before all test methods.
@@ -64,7 +66,7 @@ public class CalculatorAppTest {
   /**
    * @brief Test method to validate the successful execution of the main method.
    *
-   * @details This method redirects the System.in and System.out streams to simulate user input and capture the output. It calls the main method of CalculatorApp with a valid argument and asserts the expected behavior based on the output.
+   * @details This method redirects the System.in and System.out streams to simulate user input and capture the output. It calls the main method of InventoryApp with a valid argument and asserts the expected behavior based on the output.
    */
   @Test
   public void testMainSuccess() {
@@ -80,8 +82,8 @@ public class CalculatorAppTest {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStream));
     String[] args = new String[] {"0"};
-    // Call the main method of CalculatorApp
-    CalculatorApp.main(args);
+    // Call the main method of InventoryApp
+    InventoryApp.main(args);
     // Restore original System.in and System.out
     System.setIn(originalIn);
     System.setOut(originalOut);
@@ -90,14 +92,14 @@ public class CalculatorAppTest {
   }
 
   /**
-   * @brief Test method to validate the object creation of CalculatorApp.
+   * @brief Test method to validate the object creation of InventoryApp.
    *
-   * @details This method creates an instance of the CalculatorApp class and asserts the successful creation of the object.
+   * @details This method creates an instance of the InventoryApp class and asserts the successful creation of the object.
    */
   @Test
   public void testMainObject() {
-    // Creating an instance of CalculatorApp
-    CalculatorApp app = new CalculatorApp();
+    // Creating an instance of InventoryApp
+    InventoryApp app = new InventoryApp();
     // Asserting the successful creation of the object
     assertTrue(true);
   }
@@ -105,7 +107,7 @@ public class CalculatorAppTest {
   /**
    * @brief Test method to validate the error handling of the main method.
    *
-   * @details This method redirects the System.in and System.out streams to simulate user input and capture the output. It calls the main method of CalculatorApp with an invalid argument and asserts the expected behavior based on the output.
+   * @details This method redirects the System.in and System.out streams to simulate user input and capture the output. It calls the main method of InventoryApp with an invalid argument and asserts the expected behavior based on the output.
    */
   @Test
   public void testMainError() {
@@ -121,8 +123,8 @@ public class CalculatorAppTest {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStream));
     String[] args = new String[] {"1"};
-    // Call the main method of CalculatorApp
-    CalculatorApp.main(args);
+    // Call the main method of InventoryApp
+    InventoryApp.main(args);
     // Restore original System.in and System.out
     System.setIn(originalIn);
     System.setOut(originalOut);
