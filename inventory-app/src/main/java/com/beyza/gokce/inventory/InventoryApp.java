@@ -11,11 +11,10 @@
 */
 package com.beyza.gokce.inventory;
 
-import java.io.IOException;
+import java.sql.Connection;
+import java.util.Arrays;
+import java.util.Scanner;
 
-import org.slf4j.LoggerFactory;
-
-import ch.qos.logback.classic.Logger;
 
 /**
  *
@@ -31,7 +30,6 @@ public class InventoryApp {
   /**
    * @brief Logger for the InventoryApp class.
    */
-  private static final Logger logger = (Logger) LoggerFactory.getLogger(InventoryApp.class);
 
   /**
    * @brief The main entry point of the Inventory App.
@@ -42,39 +40,35 @@ public class InventoryApp {
    *
    * @param args The command-line arguments passed to the application.
    */
-  public static void main(String[] args) {
-    // Logging messages for informational purposes
-    logger.info("Logging message");
-    // Logging an error message
-    logger.error("Error message");
-    // Displaying a greeting message
-    System.out.println("Hello World!");
-
-    try {
-      // Checking if command-line arguments are provided
-      if (args != null) {
-        // Checking if there are any arguments
-        if (args.length > 0) {
-          // Checking if the first argument is "1"
-          if (args[0].equals("1")) {
-            // Throwing a dummy IOException
-            throw new IOException("Dummy Exception...");
-          }
-        }
-      }
-
-      // Prompting the user to press Enter to continue
-      System.out.println("Press Enter to Continue...");
-      // Reading user input from the console
-      System.in.read();
-      // Displaying a closing message
-      System.out.println("Thank you...");
-    } catch (IOException e) {
-      // Logging the exception
-      logger.error(e.toString());
-      // Printing the exception stack trace
-      e.printStackTrace();
-    }
-  }
-
+	  public static void main(String[] args) {
+		  
+		   Connection conn = DatabaseConnection.connect(); 
+	        DatabaseConnection.disconnect(conn);
+	        
+	        Inventory.createTables(); 
+	        Inventory.loadUsersFromDatabase(); 
+		  
+		  Scanner scanner = new Scanner(System.in);
+	      while (true) {
+	          System.out.println("1. Login\n2. Register\n3. Guest Mode\n4. Exit");
+	          int choice = scanner.nextInt();
+	          scanner.nextLine();
+	          switch (choice) {
+	              case 1:
+	                  Inventory.login();
+	                  break;
+	              case 2:
+	                  Inventory.register();
+	                  break;
+	              case 3:
+	                  Inventory.mainMenu();
+	                  break;
+	              case 4:
+	                  System.exit(0);
+	                  break;
+	              default:
+	                  System.out.println("Invalid choice. Please try again.");
+	          }
+	      }
+	  }
 }
