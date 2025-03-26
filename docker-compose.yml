@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: my-java-app
+    volumes:
+      - sqlite_data:/app/data
+    environment:
+      SQLITE_DB_PATH: /app/data/database.db
+    ports:
+      - "8080:8080"
+
+volumes:
+  sqlite_data:

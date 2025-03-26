@@ -19,7 +19,7 @@ public class DatabaseConnection {
     public static Connection connect() {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:veritabani.db"; 
+        	String url = "jdbc:sqlite:" + System.getenv("SQLITE_DB_PATH"); 
             conn = DriverManager.getConnection(url);
             System.out.println("SQLite bağlantısı başarılı!");
         } catch (SQLException e) {

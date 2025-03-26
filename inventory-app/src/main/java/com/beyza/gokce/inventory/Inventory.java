@@ -65,15 +65,14 @@ public String getPassword() {
 
 public boolean authenticate(String password) {
     return this.password.equals(password);
+ 
 }
-
 }
 
 class User extends Person {
 public User(String username, String password) {
    super(username, password);
 }
-
 }
 
 class InventoryItem extends Record {
@@ -106,7 +105,6 @@ class InventoryItem extends Record {
   public void displayInfo() {
       System.out.println(name + " - " + quantity + " piece - " + cost + " TL");
   }
-  
 }
 
 interface Manageable {
@@ -160,13 +158,12 @@ class Expense extends Record {
 public String getDescription() {
 	return getDescription();
 }
-
 }
 
 
 class Sale extends Record {
-  int quantity;  
-  double price;  
+  int quantity; 
+  double price; 
   String item;   
 
   public Sale(String item, int quantity, double price) {
@@ -205,7 +202,6 @@ public class Inventory {
 	    try {
 	        connection = DriverManager.getConnection(DATABASE_URL);
 	    } catch (SQLException e) {
-	        System.out.println("Connection error: " + e.getMessage());
 	    }
 	    return connection;
 	}
@@ -250,7 +246,7 @@ public class Inventory {
 	        stmt.execute(createSalesTable);
 	        System.out.println("Tables created successfully.");
 	    } catch (SQLException e) {
-	        System.out.println("Error creating tables: " + e.getMessage());
+	        
 	    }
 	}
 	
@@ -262,14 +258,14 @@ public class Inventory {
 	        pstmt.executeUpdate();
 	        System.out.println("User added to database.");
 	    } catch (SQLException e) {
-	        System.out.println("Error adding user to database: " + e.getMessage());
+	       
 	    }
 	}
 
 	static void loadUsersFromDatabase() {
 	    String sql = "SELECT username, password FROM users";
 	    try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-	        users.clear(); 
+	        users.clear();
 	        while (rs.next()) {
 	            String username = rs.getString("username");
 	            String password = rs.getString("password");
@@ -277,7 +273,7 @@ public class Inventory {
 	        }
 	        System.out.println("Users loaded from database.");
 	    } catch (SQLException e) {
-	        System.out.println("Error loading users from database: " + e.getMessage());
+	     
 	    }
 	}
 	
@@ -290,7 +286,7 @@ public class Inventory {
 	        pstmt.executeUpdate();
 	        System.out.println("Material added to database.");
 	    } catch (SQLException e) {
-	        System.out.println("Error adding material to database: " + e.getMessage());
+	       
 	    }
 	}
 
@@ -306,7 +302,7 @@ public class Inventory {
 	        }
 	        System.out.println("Inventory loaded from database.");
 	    } catch (SQLException e) {
-	        System.out.println("Error loading inventory from database: " + e.getMessage());
+	       
 	    }
 	}
 
@@ -317,7 +313,7 @@ public class Inventory {
 	        pstmt.executeUpdate();
 	        System.out.println("Project added to database.");
 	    } catch (SQLException e) {
-	        System.out.println("Error adding project to database: " + e.getMessage());
+	        
 	    }
 	}
 
@@ -329,20 +325,18 @@ public class Inventory {
 	        pstmt.executeUpdate();
 	        System.out.println("Expense added to database.");
 	    } catch (SQLException e) {
-	        System.out.println("Error adding expense to database: " + e.getMessage());
 	    }
 	}
 
 	static void addSaleToDatabase(Sale sale) {
 	    String sql = "INSERT INTO sales (item, quantity, price) VALUES (?, ?, ?)";
 	    try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	        pstmt.setString(1, sale.item);
-	        pstmt.setInt(2, sale.getQuantity()); 
-	        pstmt.setDouble(3, sale.getPrice()); 
+	        pstmt.setString(1, sale.item); 
+	        pstmt.setInt(2, sale.getQuantity());
+	        pstmt.setDouble(3, sale.getPrice());
 	        pstmt.executeUpdate(); 
 	        System.out.println("Sale added to database.");
 	    } catch (SQLException e) {
-	        System.out.println("Error adding sale to database: " + e.getMessage());
 	    }
 	}
 
@@ -368,7 +362,7 @@ public class Inventory {
        System.out.println("Registration successful!");
    }
 
-   static void login() {
+   static boolean login() {
        System.out.print("Username: ");
        String username = scanner.nextLine();
        System.out.print("Password: ");
@@ -378,14 +372,14 @@ public class Inventory {
            if (user.getUsername().equals(username) && user.authenticate(password)) {
                currentUser = user;
                System.out.println("Login successful!");
-               mainMenu();
-               return;
+               return false;
            }
        }
        System.out.println("Login failed! Please try again.");
+	return false;
    }
 
-   static void mainMenu() {
+   static boolean mainMenu() {
        while (true) {
            System.out.println("1. Material Inventory\n2. Project Tacking\n3. Expense Logging\n4. Sales Tracker\n5. Exit");
            int choice = scanner.nextInt();
@@ -399,13 +393,13 @@ public class Inventory {
                break;
                case 4: salesTracker();
                break;
-               case 5: System.exit(0);break;
+               case 5: return false;
                default: System.out.println("Invalid choice. Please try again.");
            }
        }
    }
 
-   static void materialInventory() {
+   static boolean materialInventory() {
        System.out.println("1. Add Material\n2. View Inventory\n3. Edit Material\n4. Remove Material\n5. Return to main menu");
        int choice = scanner.nextInt();
        scanner.nextLine();
@@ -422,9 +416,10 @@ public class Inventory {
        break;
        default: System.out.println("Invalid choice. Please try again."); 
        }
+	return false;
    }
    
-   static void addMaterial() {
+   static boolean addMaterial() {
        System.out.print("Material name: ");
        String name = scanner.nextLine();
        System.out.print("Amount: ");
@@ -435,22 +430,21 @@ public class Inventory {
        inventory.add(item);
        addMaterialToDatabase(item);
        System.out.println("Material added successfully.");
-       mainMenu();
+	return false;
    }
     
-    static void viewInventory() {
+    static boolean viewInventory() {
          if (inventory.isEmpty()) {
-            System.out.println("No materials in inventory.");
          } else {
             for (InventoryItem item : inventory) {
                 System.out.println(item.name + " - " + item.quantity + " piece - " + item.cost + " TL");
             }
          }
-    	 mainMenu();
+		return false;
    }
 
 
-   static void editMaterial() {
+   static boolean editMaterial() {
    	   System.out.print("Enter material name to edit: ");
           String name = scanner.nextLine();
           for (InventoryItem item : inventory) {
@@ -459,27 +453,26 @@ public class Inventory {
                   item.quantity = scanner.nextInt();
                   System.out.print("New Cost: ");
                   item.cost = scanner.nextDouble();
-                  scanner.nextLine(); 
+                  scanner.nextLine();
                   System.out.println("Material updated successfully.");
-                  mainMenu();
-                  return;
+                  return false;
               }
           }
-          System.out.println("Material not found.");
+		return false;
    }
 
-   static void removeMaterial() {
+   static boolean removeMaterial() {
    	  System.out.print("Enter material name to remove: ");
          String name = scanner.nextLine();
          if (inventory.removeIf(item -> item.name.equalsIgnoreCase(name))) {
              System.out.println("Material removed successfully.");
          } else {
-             System.out.println("Material not found.");
+             
          }
-         mainMenu();
+         return false;
    }
 
-   static void projectTacking() {
+   static boolean projectTacking() {
        System.out.println("1. Add Project\n2. View Project\n3. Return to main menu");
        int choice = scanner.nextInt();
        scanner.nextLine();
@@ -492,6 +485,7 @@ public class Inventory {
        break;
        default: System.out.println("Invalid choice. Please try again.");
        }
+	return false;
    }
 
    static void addProject() {
@@ -508,7 +502,7 @@ public class Inventory {
        } 
    } 
    
-   static void expenseLogging() {
+   static boolean expenseLogging() {
        System.out.println("1. Add Expense\n2. Expenses List\n3. Return to main menu");
        int choice = scanner.nextInt();
        scanner.nextLine();
@@ -521,9 +515,10 @@ public class Inventory {
        break;
        default: System.out.println("Invalid choice. Please try again.");
        }
+	return false;
    }
    
-   static void addExpense() {
+   static boolean addExpense() {
    	   System.out.print("Expense Statement: ");
           String description = scanner.nextLine();
           System.out.print("Amount: ");
@@ -531,7 +526,7 @@ public class Inventory {
           Expense expense = new Expense(description, amount); 
           expenses.add(expense); 
           addExpenseToDatabase(expense); 
-          mainMenu();
+          return false;
    }
 
    static void expensesList() {
@@ -541,7 +536,7 @@ public class Inventory {
        }
    }
 
-   static void salesTracker() {
+   static boolean salesTracker() {
        System.out.println("1. Add Sales\n2. List Sales\n3. Calculate Profit\n4. Return to main menu");
        int choice = scanner.nextInt();
        scanner.nextLine();
@@ -553,12 +548,13 @@ public class Inventory {
        case 3: calculateProfit();
        break;
        case 4: mainMenu();
-       break;
+       break; 
        default: System.out.println("Invalid choice. Please try again.");
        }
+	return false;
    }
    
-   static void addSales() {
+   static boolean addSales() {
        System.out.print("Product name: ");
        String item = scanner.nextLine();
        System.out.print("Amount: ");
@@ -566,9 +562,9 @@ public class Inventory {
        System.out.print("Price: ");
        double price = scanner.nextDouble();
        Sale sale = new Sale(item, quantity, price); 
-       sales.add(sale);
+       sales.add(sale); 
        addSaleToDatabase(sale); 
-       mainMenu();
+       return false;
    }
 
    static void listSales() {
