@@ -852,5 +852,4 @@ public class InventoryTest {
 	        String output = outputStreamCaptor.toString();
 	    }
 	    
-	    
 }

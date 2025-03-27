@@ -40,35 +40,54 @@ public class InventoryApp {
    *
    * @param args The command-line arguments passed to the application.
    */
-	  public static void main(String[] args) {
-		  
-		   Connection conn = DatabaseConnection.connect(); 
-	        DatabaseConnection.disconnect(conn);
+	/**
+	 * The main entry point of the application.
+	 * Establishes a database connection, initializes the inventory system,
+	 * and provides a menu for user interaction.
+	 *
+	 * @param args Command-line arguments (not used in this application).
+	 */
+	public static void main(String[] args) {
+	    
+	    // Establish a connection to the database
+	    Connection conn = DatabaseConnection.connect(); 
+	    
+	    // Disconnect from the database after use
+	    DatabaseConnection.disconnect(conn);
+	    
+	    // Initialize inventory tables and load users
+	    Inventory.createTables(); 
+	    Inventory.loadUsersFromDatabase(); 
+	    
+	    // Create a scanner for user input
+	    Scanner scanner = new Scanner(System.in);
+	    
+	    // Infinite loop for the main menu
+	    while (true) {
+	        System.out.println("1. Login\n2. Register\n3. Guest Mode\n4. Exit");
 	        
-	        Inventory.createTables(); 
-	        Inventory.loadUsersFromDatabase(); 
-		  
-		  Scanner scanner = new Scanner(System.in);
-	      while (true) {
-	          System.out.println("1. Login\n2. Register\n3. Guest Mode\n4. Exit");
-	          int choice = scanner.nextInt();
-	          scanner.nextLine();
-	          switch (choice) {
-	              case 1:
-	                  Inventory.login();
-	                  break;
-	              case 2:
-	                  Inventory.register();
-	                  break;
-	              case 3:
-	                  Inventory.mainMenu();
-	                  break;
-	              case 4:
-	                  System.exit(0);
-	                  break;
-	              default:
-	                  System.out.println("Invalid choice. Please try again.");
-	          }
-	      }
-	  }
+	        // Read user choice
+	        int choice = scanner.nextInt();
+	        scanner.nextLine();
+	        
+	        // Handle user choice
+	        switch (choice) {
+	            case 1:
+	                Inventory.login();
+	                break;
+	            case 2:
+	                Inventory.register();
+	                break;
+	            case 3:
+	                Inventory.mainMenu();
+	                break;
+	            case 4:
+	                System.exit(0);
+	                break;
+	            default:
+	                System.out.println("Invalid choice. Please try again.");
+	        }
+	    }
+	}
+
 }

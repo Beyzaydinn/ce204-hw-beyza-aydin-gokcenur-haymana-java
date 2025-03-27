@@ -21,9 +21,9 @@ public class DatabaseConnection {
         try {
         	String url = "jdbc:sqlite:" + System.getenv("SQLITE_DB_PATH"); 
             conn = DriverManager.getConnection(url);
-            System.out.println("SQLite bağlantısı başarılı!");
+            System.out.println("SQLite connection successful!");
         } catch (SQLException e) {
-            System.out.println("Bağlantı hatası: " + e.getMessage());
+            System.out.println("Connection error: " + e.getMessage());
         }
         return conn;
     }
@@ -32,10 +32,10 @@ public class DatabaseConnection {
         try {
             if (conn != null) {
                 conn.close();
-                System.out.println("Bağlantı kapatıldı.");
+                System.out.println("The connection has been closed.");
             }
         } catch (SQLException e) {
-            System.out.println("Bağlantı kapatma hatası: " + e.getMessage());
+            System.out.println("Connection closing error: " + e.getMessage());
         }
     }
 }
