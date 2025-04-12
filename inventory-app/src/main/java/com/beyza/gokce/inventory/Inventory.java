@@ -64,6 +64,12 @@ public abstract void displayInfo();
  * Implements Serializable to allow object serialization.
  */
 class Person implements Serializable {
+	/**
+	 * @brief Stores the username of the user.
+	 *
+	 * This field holds the username associated with a user account. It is used for 
+	 * user identification and authentication purposes within the system.
+     */
 private String username;
 String password;
 /**
@@ -109,6 +115,15 @@ public boolean authenticate(String password) {
  * Extends the Person class to inherit user-related attributes.
  */
 class User extends Person {
+	/**
+	 * @brief Constructs a new User object with the specified username and password.
+	 *
+	 * This constructor initializes a new instance of the User class with the given 
+	 * username and password, which are required for user authentication and management.
+	 *
+	 * @param username The username for the user account.
+	 * @param password The password associated with the user account.
+	 */
 public User(String username, String password) {
    super(username, password);
 }
@@ -282,8 +297,13 @@ public String getDescription() {
 }
 }
 /**
- * Represents a sale transaction of an item.
- * Extends the Record class to include details about sold items.
+ * @class SaleRecord
+ * @brief Represents a sale transaction of an item.
+ *
+ * Inherits from the Record class and adds information specific to sold items,
+ * such as quantity, price, and date of sale. Used in systems that track item sales.
+ *
+ * @see Record
  */
 
 class Sale extends Record {
@@ -313,10 +333,13 @@ class Sale extends Record {
   }
 
   /**
-   * Retrieves the price of the sold item.
+   * @brief Retrieves the unit price of the sold item.
    *
-   * @return The price per unit of the item.
+   * Returns the price for a single unit of the item sold during the transaction.
+   *
+   * @return The price per unit.
    */
+
   public double getPrice() {
       return price;
   }
@@ -331,10 +354,13 @@ class Sale extends Record {
   }
 
   /**
-   * Retrieves the name of the sold item.
+   * @brief Retrieves the name of the sold item.
    *
-   * @return The name of the item sold.
+   * Returns the name or label of the item that was part of the sale transaction.
+   *
+   * @return The name of the sold item.
    */
+
 
 	public String item() {
 		// TODO Auto-generated method stub
@@ -346,7 +372,13 @@ class Sale extends Record {
  */
 
 public class Inventory {
-	   // Database URL for SQLite connection
+	/**
+	 * @brief The URL for connecting to the SQLite database.
+	 *
+	 * This constant holds the connection string used to connect to the SQLite database 
+	 * that stores inventory data. The database file is named "inventory_manager.db" 
+	 * and is expected to be located in the default directory of the application.
+	 */
 	private static final String DATABASE_URL = "jdbc:sqlite:inventory_manager.db";
     /**
      * Establishes a connection to the SQLite database.
@@ -362,10 +394,14 @@ public class Inventory {
 	    }
 	    return connection;
 	}
-    /**
-     * Creates necessary tables for users, inventory, projects, expenses, and sales if they do not exist.
-     * Ensures data is structured and stored properly within the database.
-     */
+	/**
+	 * @brief Creates essential database tables if they do not exist.
+	 *
+	 * Initializes tables for users, inventory, projects, expenses, and sales
+	 * to ensure the application's data is organized and stored correctly.
+	 * This setup is typically performed during the first launch or when resetting the database.
+	 */
+
 	static void createTables() {
 	    String createUsersTable = "CREATE TABLE IF NOT EXISTS users ("
 	            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -397,6 +433,15 @@ public class Inventory {
 	            + "quantity INTEGER NOT NULL,"
 	            + "price REAL NOT NULL"
 	            + ");";
+	    /**
+	     * @brief Initializes the database by creating required tables.
+	     *
+	     * Establishes a connection to the database and executes SQL statements to create
+	     * the Users, Inventory, Projects, Expenses, and Sales tables if they do not already exist.
+	     * Prints a confirmation message upon successful creation.
+	     *
+	     * Handles SQL exceptions silently.
+	     */
 
 	    try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
 	        stmt.execute(createUsersTable);
@@ -410,6 +455,16 @@ public class Inventory {
 	    }
 	}
 	
+	/**
+	 * @brief Adds a new user to the database.
+	 *
+	 * Inserts the given user's username and password into the users table
+	 * using a prepared statement to prevent SQL injection.
+	 * Prints a confirmation message upon successful insertion.
+	 *
+	 * @param user The User object containing username and password information.
+	 */
+
 	static void addUserToDatabase(User user) {
 	    String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
 	    try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -616,10 +671,15 @@ public class Inventory {
 	return false;
    }
    /**
-    * Adds a new material to the inventory and database.
-    * 
-    * @return false to indicate the operation is complete.
+    * @brief Adds a new material to the inventory and saves it to the database.
+    *
+    * Inserts the material's information into the inventory table to keep records up to date.
+    * Ensures that the material becomes available for tracking and future operations.
+    *
+    * @return false Always returns false to indicate the operation has finished,
+    *         though the return value does not reflect success or failure.
     */
+
    static boolean addMaterial() {
        System.out.print("Material name: ");
        String name = scanner.nextLine();
@@ -686,11 +746,17 @@ public class Inventory {
          return false;
    }
 
-/**
- * Manages project tracking, including adding and viewing projects, or returning to the main menu.
- * 
- * @return false to indicate the menu continues.
- */
+   /**
+    * @brief Manages project tracking and navigation within the project management menu.
+    *
+    * Handles operations such as adding new projects, viewing existing projects, 
+    * or returning to the main menu. This method ensures smooth user interaction 
+    * within the project management system.
+    *
+    * @return false Always returns false to indicate that the menu remains open
+    *         and the user can continue interacting with the project management options.
+    */
+
    static boolean projectTacking() {
        System.out.println("1. Add Project\n2. View Project\n3. Return to main menu");
        int choice = scanner.nextInt();
