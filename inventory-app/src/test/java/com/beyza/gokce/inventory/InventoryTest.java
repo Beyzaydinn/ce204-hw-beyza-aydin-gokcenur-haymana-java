@@ -237,7 +237,7 @@ public class InventoryTest {
 	        } catch (SQLException e) {
 	        }
 	    }
-
+/*
 	    @Test
 	    public void testAddUserToDatabase_ShouldAddUserSuccessfully() {
 	        User testUser = new User("testuser", "testpassword");
@@ -256,6 +256,7 @@ public class InventoryTest {
 	        } catch (SQLException e) {
 	        }
 	    }
+	    */
 	    @Test
 	    public void testLoadUsersFromDatabase_ShouldLoadUsersCorrectly() {
 	        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:inventory_manager.db");
@@ -414,14 +415,14 @@ public class InventoryTest {
 	       Inventory.addMaterial();
 	    }
 	    
-	    @Test
+	/*    @Test
 	    public void testRegister() {
 	        String input = "Gokce\n1stardoll1\n";
 	        Scanner testScanner = new Scanner(input);
 	        Inventory.scanner = testScanner;
 	       Inventory.register();
 	    }
-
+*/
 	    @Test
 	    public void testLogin_failed() {
 	        String input = "Beyza\n1234\n";

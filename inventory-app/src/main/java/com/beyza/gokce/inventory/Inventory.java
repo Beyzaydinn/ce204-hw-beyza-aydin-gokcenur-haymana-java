@@ -466,14 +466,31 @@ public class Inventory {
 	 */
 
 	static void addUserToDatabase(User user) {
-	    String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-	    try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	        pstmt.setString(1, user.getUsername());
-	        pstmt.setString(2, user.password);
-	        pstmt.executeUpdate();
-	        System.out.println("User added to database.");
+	    // Önce kullanıcının var olup olmadığını kontrol et
+	    String checkSql = "SELECT * FROM users WHERE username = ?";
+	    String insertSql = "INSERT INTO users (username, password) VALUES (?, ?)";
+	    
+	    try (Connection conn = connect();
+	         PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+	         PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+	        
+	        // Kullanıcı adı kontrolü
+	        checkStmt.setString(1, user.getUsername());
+	        ResultSet rs = checkStmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            // Kullanıcı zaten var
+	            throw new SQLException("Username already exists");
+	        }
+	        
+	        // Yeni kullanıcı ekle
+	        insertStmt.setString(1, user.getUsername());
+	        insertStmt.setString(2, user.getPassword());
+	        insertStmt.executeUpdate();
+	        
 	    } catch (SQLException e) {
-	    	 // Handle table creation error
+	        e.printStackTrace();
+	        throw new RuntimeException("Failed to add user: " + e.getMessage());
 	    }
 	}
 	/**
@@ -901,4 +918,27 @@ public class Inventory {
   	    }
   	    System.out.println("Total profit: " + totalProfit + " TL");
   }
+public static boolean authenticateUser(String username, String password) {
+    String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+    
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+        
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            // Kullanıcı bulundu, giriş başarılı
+            return true;
+        }
+        
+        // Kullanıcı bulunamadı, giriş başarısız
+        return false;
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
 }
