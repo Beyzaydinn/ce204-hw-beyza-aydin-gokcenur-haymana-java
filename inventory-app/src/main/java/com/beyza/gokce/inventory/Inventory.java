@@ -35,7 +35,7 @@ import ch.qos.logback.classic.Logger;
  * Implements Serializable to allow object serialization.
  */
 abstract class Record implements Serializable {
-String name;
+    protected String name;
 /**
  * Constructor to initialize a record with a name.
  *
@@ -52,6 +52,14 @@ public Record(String name) {
  */
 public String getName() {
     return name;
+}
+/**
+ * Sets the name of the record.
+ *
+ * @param name The new name of the record.
+ */
+public void setName(String name) {
+    this.name = name;
 }
 /**
  * Abstract method to display record information.
@@ -386,13 +394,19 @@ public class Inventory {
      * @return A Connection object if successful, null otherwise.
      */
 	private static Connection connect() {
-	    Connection connection = null;
-	    try {
-	        connection = DriverManager.getConnection(DATABASE_URL);
-	    } catch (SQLException e) {
-	    	// Handle database connection error
+	    // Klasör yoksa oluştur
+	    File dbDir = new File("sqlite_data");
+	    if (!dbDir.exists()) {
+	        dbDir.mkdirs();
+	        System.out.println("sqlite_data klasörü oluşturuldu (connect içinde).");
 	    }
-	    return connection;
+	    try {
+	        Class.forName("org.sqlite.JDBC");
+	        return DriverManager.getConnection(DATABASE_URL);
+	    } catch (SQLException | ClassNotFoundException e) {
+	        e.printStackTrace();
+	        return null;
+	    }
 	}
 	/**
 	 * @brief Creates essential database tables if they do not exist.
@@ -403,53 +417,47 @@ public class Inventory {
 	 */
 
 	static void createTables() {
-	    String createUsersTable = "CREATE TABLE IF NOT EXISTS users ("
-	            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-	            + "username TEXT NOT NULL UNIQUE,"
-	            + "password TEXT NOT NULL"
-	            + ");";
+	    File dbFile = new java.io.File("sqlite_data/inventory_manager.db");
+	    try (Connection conn = connect()) {
+	        if (conn != null) {
+	            Statement stmt = conn.createStatement();
+	            String createUsersTable = "CREATE TABLE IF NOT EXISTS users ("
+	                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+	                    + "username TEXT NOT NULL UNIQUE,"
+	                    + "password TEXT NOT NULL"
+	                    + ");";
 
-	    String createInventoryTable = "CREATE TABLE IF NOT EXISTS inventory ("
-	            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-	            + "name TEXT NOT NULL,"
-	            + "quantity INTEGER NOT NULL,"
-	            + "cost REAL NOT NULL"
-	            + ");";
+	            String createInventoryTable = "CREATE TABLE IF NOT EXISTS inventory ("
+	                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+	                    + "name TEXT NOT NULL,"
+	                    + "quantity INTEGER NOT NULL,"
+	                    + "cost REAL NOT NULL"
+	                    + ");";
 
-	    String createProjectsTable = "CREATE TABLE IF NOT EXISTS projects ("
-	            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-	            + "name TEXT NOT NULL"
-	            + ");";
+	            String createProjectsTable = "CREATE TABLE IF NOT EXISTS projects ("
+	                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+	                    + "name TEXT NOT NULL"
+	                    + ");";
 
-	    String createExpensesTable = "CREATE TABLE IF NOT EXISTS expenses ("
-	            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-	            + "description TEXT NOT NULL,"
-	            + "amount REAL NOT NULL"
-	            + ");";
+	            String createExpensesTable = "CREATE TABLE IF NOT EXISTS expenses ("
+	                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+	                    + "description TEXT NOT NULL,"
+	                    + "amount REAL NOT NULL"
+	                    + ");";
 
-	    String createSalesTable = "CREATE TABLE IF NOT EXISTS sales ("
-	            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-	            + "item TEXT NOT NULL,"
-	            + "quantity INTEGER NOT NULL,"
-	            + "price REAL NOT NULL"
-	            + ");";
-	    /**
-	     * @brief Initializes the database by creating required tables.
-	     *
-	     * Establishes a connection to the database and executes SQL statements to create
-	     * the Users, Inventory, Projects, Expenses, and Sales tables if they do not already exist.
-	     * Prints a confirmation message upon successful creation.
-	     *
-	     * Handles SQL exceptions silently.
-	     */
-
-	    try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
-	        stmt.execute(createUsersTable);
-	        stmt.execute(createInventoryTable);
-	        stmt.execute(createProjectsTable);
-	        stmt.execute(createExpensesTable);
-	        stmt.execute(createSalesTable);
-	        System.out.println("Tables created successfully.");
+	            String createSalesTable = "CREATE TABLE IF NOT EXISTS sales ("
+	                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+	                    + "item TEXT NOT NULL,"
+	                    + "quantity INTEGER NOT NULL,"
+	                    + "price REAL NOT NULL"
+	                    + ");";
+	            stmt.execute(createUsersTable);
+	            stmt.execute(createInventoryTable);
+	            stmt.execute(createProjectsTable);
+	            stmt.execute(createExpensesTable);
+	            stmt.execute(createSalesTable);
+	            System.out.println("Tables created successfully.");
+	        }
 	    } catch (SQLException e) {
 	        
 	    }

@@ -38,7 +38,7 @@ public class DatabaseConnection {
     public static Connection connect() {
         Connection conn = null;
         try {
-        	String url = "jdbc:sqlite:" + System.getenv("SQLITE_DB_PATH"); 
+        	String url = "jdbc:sqlite:inventory_manager.db";
             conn = DriverManager.getConnection(url);
             System.out.println("SQLite connection successful!");
         } catch (SQLException e) {

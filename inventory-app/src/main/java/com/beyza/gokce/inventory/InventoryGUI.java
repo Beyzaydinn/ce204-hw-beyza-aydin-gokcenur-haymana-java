@@ -507,8 +507,22 @@ public class InventoryGUI extends JFrame {
         
         headerPanel.add(buttonPanel);
         
+        // Create table model
+        String[] columns = {"Name", "Quantity", "Cost"};
+        inventoryModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        // Create table
+        inventoryTable = createStyledTable(inventoryModel);
+        JScrollPane scrollPane = new JScrollPane(inventoryTable);
+        scrollPane.getViewport().setBackground(TABLE_COLOR);
+        
         contentPanel.add(headerPanel, BorderLayout.NORTH);
-        // Table and scrollPane REMOVED from main screen
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
         
         mainPanel.removeAll();
         mainPanel.add(contentPanel, BorderLayout.CENTER);
@@ -516,6 +530,34 @@ public class InventoryGUI extends JFrame {
         
         mainPanel.revalidate();
         mainPanel.repaint();
+        
+        // Load data from database
+        try {
+            String sql = "SELECT name, quantity, cost FROM inventory";
+            try (Connection conn = DatabaseConnection.connect();
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
+                
+                inventory.clear();
+                inventoryModel.setRowCount(0);
+                
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    int quantity = rs.getInt("quantity");
+                    double cost = rs.getDouble("cost");
+                    
+                    InventoryItem item = new InventoryItem(name, quantity, cost);
+                    inventory.add(item);
+                    inventoryModel.addRow(new Object[]{name, quantity, cost});
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                "Error loading inventory: " + ex.getMessage(),
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     private void showProjectTracking() {
@@ -549,8 +591,22 @@ public class InventoryGUI extends JFrame {
         
         headerPanel.add(buttonPanel);
         
+        // Create table model
+        String[] columns = {"Project Name"};
+        projectModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        // Create table
+        projectTable = createStyledTable(projectModel);
+        JScrollPane scrollPane = new JScrollPane(projectTable);
+        scrollPane.getViewport().setBackground(TABLE_COLOR);
+        
         contentPanel.add(headerPanel, BorderLayout.NORTH);
-        // Table and scrollPane REMOVED from main screen
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
         
         mainPanel.removeAll();
         mainPanel.add(contentPanel, BorderLayout.CENTER);
@@ -558,6 +614,28 @@ public class InventoryGUI extends JFrame {
         
         mainPanel.revalidate();
         mainPanel.repaint();
+        
+        // Load data from database
+        try {
+            String sql = "SELECT name FROM projects";
+            try (Connection conn = DatabaseConnection.connect();
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
+                
+                projectModel.setRowCount(0);
+                
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    projectModel.addRow(new Object[]{name});
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                "Error loading projects: " + ex.getMessage(),
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     private void showExpenseLogging() {
@@ -744,22 +822,33 @@ public class InventoryGUI extends JFrame {
         
         JDialog dialog = new JDialog(this, "Edit Material", true);
         dialog.setLayout(new BorderLayout());
+        dialog.getContentPane().setBackground(MODERN_BACKGROUND);
         
         JPanel formPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        formPanel.setBackground(MODERN_PANEL);
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         JTextField nameField = new JTextField(item.getName());
         JTextField quantityField = new JTextField(String.valueOf(item.getQuantity()));
         JTextField costField = new JTextField(String.valueOf(item.getCost()));
         
-        formPanel.add(new JLabel("Name:"));
+        JLabel nameLabel = new JLabel("Name:");
+        nameLabel.setForeground(MODERN_TEXT);
+        JLabel quantityLabel = new JLabel("Quantity:");
+        quantityLabel.setForeground(MODERN_TEXT);
+        JLabel costLabel = new JLabel("Cost:");
+        costLabel.setForeground(MODERN_TEXT);
+        
+        formPanel.add(nameLabel);
         formPanel.add(nameField);
-        formPanel.add(new JLabel("Quantity:"));
+        formPanel.add(quantityLabel);
         formPanel.add(quantityField);
-        formPanel.add(new JLabel("Cost:"));
+        formPanel.add(costLabel);
         formPanel.add(costField);
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setBackground(MODERN_PANEL);
+        
         JButton saveButton = createStyledButton("Save", MODERN_PRIMARY);
         JButton cancelButton = createStyledButton("Cancel", MODERN_ACCENT);
         
@@ -769,20 +858,46 @@ public class InventoryGUI extends JFrame {
                 int quantity = Integer.parseInt(quantityField.getText());
                 double cost = Double.parseDouble(costField.getText());
                 
-                item.setQuantity(quantity);
-                item.setCost(cost);
-                
-                refreshInventoryTable();
-                dialog.dispose();
-                
-                JOptionPane.showMessageDialog(this,
-                    "Material updated successfully!",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
+                if (!name.isEmpty()) {
+                    String sql = "UPDATE inventory SET name = ?, quantity = ?, cost = ? WHERE name = ?";
+                    try (Connection conn = DatabaseConnection.connect();
+                         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                        
+                        pstmt.setString(1, name);
+                        pstmt.setInt(2, quantity);
+                        pstmt.setDouble(3, cost);
+                        pstmt.setString(4, item.getName());
+                        pstmt.executeUpdate();
+                        
+                        // Update local list
+                        item.setName(name);
+                        item.setQuantity(quantity);
+                        item.setCost(cost);
+                        
+                        refreshInventoryTable();
+                        dialog.dispose();
+                        
+                        JOptionPane.showMessageDialog(this,
+                            "Material updated successfully!",
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                        "Please enter a material name.",
+                        "Input Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this,
                     "Please enter valid numbers for quantity and cost.",
                     "Input Error",
+                    JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                    "Error updating material: " + ex.getMessage(),
+                    "Database Error",
                     JOptionPane.ERROR_MESSAGE);
             }
         });
@@ -810,19 +925,38 @@ public class InventoryGUI extends JFrame {
             return;
         }
         
+        InventoryItem item = inventory.get(selectedRow);
+        
         int confirm = JOptionPane.showConfirmDialog(this,
             "Are you sure you want to delete this material?",
             "Confirm Delete",
             JOptionPane.YES_NO_OPTION);
             
         if (confirm == JOptionPane.YES_OPTION) {
-            inventory.remove(selectedRow);
-            refreshInventoryTable();
-            
-            JOptionPane.showMessageDialog(this,
-                "Material deleted successfully!",
-                "Success",
-                JOptionPane.INFORMATION_MESSAGE);
+            try {
+                String sql = "DELETE FROM inventory WHERE name = ?";
+                try (Connection conn = DatabaseConnection.connect();
+                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    
+                    pstmt.setString(1, item.getName());
+                    pstmt.executeUpdate();
+                    
+                    // Remove from local list
+                    inventory.remove(selectedRow);
+                    refreshInventoryTable();
+                    
+                    JOptionPane.showMessageDialog(this,
+                        "Material deleted successfully!",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                    "Error deleting material: " + ex.getMessage(),
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     
@@ -840,33 +974,54 @@ public class InventoryGUI extends JFrame {
     private void showAddProjectDialog() {
         JDialog dialog = new JDialog(this, "Add Project", true);
         dialog.setLayout(new BorderLayout());
+        dialog.getContentPane().setBackground(MODERN_BACKGROUND);
         
         JPanel formPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        formPanel.setBackground(MODERN_PANEL);
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         JTextField nameField = new JTextField();
         
-        formPanel.add(new JLabel("Project Name:"));
+        JLabel nameLabel = new JLabel("Project Name:");
+        nameLabel.setForeground(MODERN_TEXT);
+        
+        formPanel.add(nameLabel);
         formPanel.add(nameField);
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setBackground(MODERN_PANEL);
+        
         JButton addButton = createStyledButton("Add", MODERN_PRIMARY);
         JButton cancelButton = createStyledButton("Cancel", MODERN_ACCENT);
         
         addButton.addActionListener(e -> {
             String name = nameField.getText();
             if (!name.isEmpty()) {
-                Project project = new Project(name);
-                Inventory.addProjectToDatabase(project);
-                projects.add(project);
-                
-                refreshProjectTable();
-                dialog.dispose();
-                
-                JOptionPane.showMessageDialog(this,
-                    "Project added successfully!",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    String sql = "INSERT INTO projects (name) VALUES (?)";
+                    try (Connection conn = DatabaseConnection.connect();
+                         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                        
+                        pstmt.setString(1, name);
+                        pstmt.executeUpdate();
+                        
+                        // Add to table
+                        projectModel.addRow(new Object[]{name});
+                        
+                        dialog.dispose();
+                        
+                        JOptionPane.showMessageDialog(this,
+                            "Project added successfully!",
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this,
+                        "Error adding project: " + ex.getMessage(),
+                        "Database Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
             } else {
                 JOptionPane.showMessageDialog(this,
                     "Please enter a project name.",
@@ -897,56 +1052,13 @@ public class InventoryGUI extends JFrame {
                 JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        Project project = projects.get(selectedRow);
-        
-        JDialog dialog = new JDialog(this, "Project Details: " + project.getName(), true);
-        dialog.setLayout(new BorderLayout());
-        
-        JPanel detailsPanel = new JPanel(new BorderLayout());
-        detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        
-        JTextArea detailsArea = new JTextArea();
-        detailsArea.setEditable(false);
-        detailsArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        
-        StringBuilder details = new StringBuilder();
-        details.append("Project: ").append(project.getName()).append("\n\n");
-        details.append("Materials:\n");
-        
-        for (InventoryItem item : project.materials) {
-            details.append("- ").append(item.getName())
-                  .append(" (Quantity: ").append(item.getQuantity())
-                  .append(", Cost: ").append(item.getCost())
-                  .append(")\n");
-        }
-        
-        detailsArea.setText(details.toString());
-        
-        JScrollPane scrollPane = new JScrollPane(detailsArea);
-        detailsPanel.add(scrollPane, BorderLayout.CENTER);
-        
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton closeButton = createStyledButton("Close", MODERN_ACCENT);
-        closeButton.addActionListener(e -> dialog.dispose());
-        buttonPanel.add(closeButton);
-        
-        dialog.add(detailsPanel, BorderLayout.CENTER);
-        dialog.add(buttonPanel, BorderLayout.SOUTH);
-        
-        dialog.setSize(400, 300);
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
-    }
-    
-    private void refreshProjectTable() {
-        projectModel.setRowCount(0);
-        for (Project project : projects) {
-            projectModel.addRow(new Object[]{
-                project.getName(),
-                project.materials.size()
-            });
-        }
+
+        String projectName = (String) projectModel.getValueAt(selectedRow, 0);
+
+        JOptionPane.showMessageDialog(this,
+            "Project Name: " + projectName,
+            "Project Details",
+            JOptionPane.INFORMATION_MESSAGE);
     }
     
     private void showAddExpenseDialog() {
@@ -1034,22 +1146,33 @@ public class InventoryGUI extends JFrame {
     private void showAddSaleDialog() {
         JDialog dialog = new JDialog(this, "Add Sale", true);
         dialog.setLayout(new BorderLayout());
+        dialog.getContentPane().setBackground(MODERN_BACKGROUND);
         
         JPanel formPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        formPanel.setBackground(MODERN_PANEL);
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         JTextField itemField = new JTextField();
         JTextField quantityField = new JTextField();
         JTextField priceField = new JTextField();
         
-        formPanel.add(new JLabel("Item:"));
+        JLabel itemLabel = new JLabel("Item:");
+        itemLabel.setForeground(MODERN_TEXT);
+        JLabel quantityLabel = new JLabel("Quantity:");
+        quantityLabel.setForeground(MODERN_TEXT);
+        JLabel priceLabel = new JLabel("Price:");
+        priceLabel.setForeground(MODERN_TEXT);
+        
+        formPanel.add(itemLabel);
         formPanel.add(itemField);
-        formPanel.add(new JLabel("Quantity:"));
+        formPanel.add(quantityLabel);
         formPanel.add(quantityField);
-        formPanel.add(new JLabel("Price:"));
+        formPanel.add(priceLabel);
         formPanel.add(priceField);
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setBackground(MODERN_PANEL);
+        
         JButton addButton = createStyledButton("Add", MODERN_PRIMARY);
         JButton cancelButton = createStyledButton("Cancel", MODERN_ACCENT);
         
@@ -1060,17 +1183,38 @@ public class InventoryGUI extends JFrame {
                 double price = Double.parseDouble(priceField.getText());
                 
                 if (!item.isEmpty()) {
-                    Sale sale = new Sale(item, quantity, price);
-                    Inventory.addSaleToDatabase(sale);
-                    sales.add(sale);
-                    
-                    refreshSalesTable();
-                    dialog.dispose();
-                    
-                    JOptionPane.showMessageDialog(this,
-                        "Sale added successfully!",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
+                    try {
+                        Sale sale = new Sale(item, quantity, price);
+                        Inventory.addSaleToDatabase(sale);
+                        sales.add(sale);
+                        
+                        // Create table model if not exists
+                        if (salesModel == null) {
+                            String[] columns = {"Item", "Quantity", "Price", "Total"};
+                            salesModel = new DefaultTableModel(columns, 0) {
+                                @Override
+                                public boolean isCellEditable(int row, int column) {
+                                    return false;
+                                }
+                            };
+                        }
+                        
+                        // Add to table
+                        salesModel.addRow(new Object[]{item, quantity, price, price * quantity});
+                        
+                        dialog.dispose();
+                        
+                        JOptionPane.showMessageDialog(this,
+                            "Sale added successfully!",
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(this,
+                            "Error adding sale: " + ex.getMessage(),
+                            "Database Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(this,
                         "Please enter an item name.",

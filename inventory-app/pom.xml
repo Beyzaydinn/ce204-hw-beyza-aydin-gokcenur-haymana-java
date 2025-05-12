@@ -164,6 +164,7 @@
 					<includes>
 						<include>**/InventoryAppTest.java</include>
 						<include>**/InventoryTest.java</include>
+						<include>**/InventoryGUITest.java</include>
 					</includes>
 				</configuration>
 			</plugin>
