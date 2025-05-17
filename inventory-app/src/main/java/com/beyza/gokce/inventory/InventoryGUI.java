@@ -14,49 +14,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryGUI extends JFrame {
-    private static final Color PRIMARY_COLOR = new Color(41, 128, 185);
-    private static final Color SECONDARY_COLOR = new Color(52, 152, 219);
-    private static final Color BACKGROUND_COLOR = new Color(44, 62, 80);
-    private static final Color TEXT_COLOR = new Color(236, 240, 241);
-    private static final Color ACCENT_COLOR = new Color(231, 76, 60);
-    private static final Color PANEL_COLOR = new Color(52, 73, 94);
-    private static final Color TABLE_COLOR = new Color(44, 62, 80);
-    private static final Color TABLE_HEADER_COLOR = new Color(52, 73, 94);
-    private static final Color TABLE_TEXT_COLOR = new Color(236, 240, 241);
+    public static final Color PRIMARY_COLOR = new Color(41, 128, 185);
+    public static final Color SECONDARY_COLOR = new Color(52, 152, 219);
+    public static final Color BACKGROUND_COLOR = new Color(44, 62, 80);
+    public static final Color TEXT_COLOR = new Color(236, 240, 241);
+    public static final Color ACCENT_COLOR = new Color(231, 76, 60);
+    public static final Color PANEL_COLOR = new Color(52, 73, 94);
+    public static final Color TABLE_COLOR = new Color(44, 62, 80);
+    public static final Color TABLE_HEADER_COLOR = new Color(52, 73, 94);
+    public static final Color TABLE_TEXT_COLOR = new Color(236, 240, 241);
     
     // Yeni modern renkler
-    private static final Color MODERN_PRIMARY = new Color(26, 188, 156);
-    private static final Color MODERN_SECONDARY = new Color(46, 204, 113);
-    private static final Color MODERN_ACCENT = new Color(155, 89, 182);
-    private static final Color MODERN_BACKGROUND = new Color(52, 73, 94);
-    private static final Color MODERN_PANEL = new Color(44, 62, 80);
-    private static final Color MODERN_TEXT = new Color(236, 240, 241);
+    public static final Color MODERN_PRIMARY = new Color(26, 188, 156);
+    public static final Color MODERN_SECONDARY = new Color(46, 204, 113);
+    public static final Color MODERN_ACCENT = new Color(155, 89, 182);
+    public static final Color MODERN_BACKGROUND = new Color(52, 73, 94);
+    public static final Color MODERN_PANEL = new Color(44, 62, 80);
+    public static final Color MODERN_TEXT = new Color(236, 240, 241);
     
-    private JPanel mainPanel;
-    private JPanel sideMenuPanel;
-    private JPanel contentPanel;
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private String currentUser;
-    private ImageIcon logoIcon;
+    public JPanel mainPanel;
+    public JPanel sideMenuPanel;
+    public JPanel contentPanel;
+    public JTextField usernameField;
+    public JPasswordField passwordField;
+    public String currentUser;
+    public ImageIcon logoIcon;
     
     // Tables
-    private JTable inventoryTable;
-    private JTable projectTable;
-    private JTable expenseTable;
-    private JTable salesTable;
+    public JTable inventoryTable;
+    public JTable projectTable;
+    public JTable expenseTable;
+    public JTable salesTable;
     
     // Data models
-    private DefaultTableModel inventoryModel;
-    private DefaultTableModel projectModel;
-    private DefaultTableModel expenseModel;
-    private DefaultTableModel salesModel;
+    public DefaultTableModel inventoryModel;
+    public DefaultTableModel projectModel;
+    public DefaultTableModel expenseModel;
+    public DefaultTableModel salesModel;
     
     // Lists to store data
-    private List<InventoryItem> inventory = new ArrayList<>();
-    private List<Project> projects = new ArrayList<>();
-    private List<Expense> expenses = new ArrayList<>();
-    private List<Sale> sales = new ArrayList<>();
+    public List<InventoryItem> inventory = new ArrayList<>();
+    public List<Project> projects = new ArrayList<>();
+    public List<Expense> expenses = new ArrayList<>();
+    public List<Sale> sales = new ArrayList<>();
  
     public InventoryGUI() {
         super("Inventory Management System");
@@ -560,7 +560,7 @@ public class InventoryGUI extends JFrame {
         }
     }
     
-    private void showProjectTracking() {
+    public void showProjectTracking() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBackground(MODERN_BACKGROUND);
@@ -638,7 +638,7 @@ public class InventoryGUI extends JFrame {
         }
     }
     
-    private void showExpenseLogging() {
+    public void showExpenseLogging() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBackground(MODERN_BACKGROUND);
