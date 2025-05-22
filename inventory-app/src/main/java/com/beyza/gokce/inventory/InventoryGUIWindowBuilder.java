@@ -17,57 +17,57 @@ public class InventoryGUIWindowBuilder extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	// Color constants
-	private static final Color PRIMARY_COLOR = new Color(41, 128, 185);
-	private static final Color SECONDARY_COLOR = new Color(52, 152, 219);
-	private static final Color BACKGROUND_COLOR = new Color(44, 62, 80);
-	private static final Color TEXT_COLOR = new Color(236, 240, 241);
-	private static final Color ACCENT_COLOR = new Color(231, 76, 60);
-	private static final Color PANEL_COLOR = new Color(52, 73, 94);
-	private static final Color TABLE_COLOR = new Color(44, 62, 80);
-	private static final Color TABLE_HEADER_COLOR = new Color(52, 73, 94);
-	private static final Color TABLE_TEXT_COLOR = new Color(236, 240, 241);
+	public static final Color PRIMARY_COLOR = new Color(41, 128, 185);
+	public static final Color SECONDARY_COLOR = new Color(52, 152, 219);
+	public static final Color BACKGROUND_COLOR = new Color(44, 62, 80);
+	public static final Color TEXT_COLOR = new Color(236, 240, 241);
+	public static final Color ACCENT_COLOR = new Color(231, 76, 60);
+	public static final Color PANEL_COLOR = new Color(52, 73, 94);
+	public static Color TABLE_COLOR = new Color(44, 62, 80);
+	public static Color TABLE_HEADER_COLOR = new Color(52, 73, 94);
+	public static Color TABLE_TEXT_COLOR = new Color(236, 240, 241);
 	
 	// Modern color scheme
-	private static final Color MODERN_PRIMARY = new Color(26, 188, 156);
-	private static final Color MODERN_SECONDARY = new Color(46, 204, 113);
-	private static final Color MODERN_ACCENT = new Color(155, 89, 182);
-	private static final Color MODERN_BACKGROUND = new Color(52, 73, 94);
-	private static final Color MODERN_PANEL = new Color(44, 62, 80);
-	private static final Color MODERN_TEXT = new Color(236, 240, 241);
+	public static Color MODERN_PRIMARY = new Color(26, 188, 156);
+	public static Color MODERN_SECONDARY = new Color(46, 204, 113);
+	public static Color MODERN_ACCENT = new Color(155, 89, 182);
+	public static Color MODERN_BACKGROUND = new Color(52, 73, 94);
+	public static Color MODERN_PANEL = new Color(44, 62, 80);
+	public static Color MODERN_TEXT = new Color(236, 240, 241);
 	
 	// GUI Components
-	private JPanel mainPanel;
-	private JPanel sideMenuPanel;
-	private JPanel contentPanel;
-	private JTextField usernameField;
-	private JPasswordField passwordField;
-	private String currentUser;
-	private ImageIcon logoIcon;
-	private JLabel logoLabel; // Logo için JLabel
+	public JPanel mainPanel;
+	public JPanel sideMenuPanel;
+	public JPanel contentPanel;
+	public JTextField usernameField;
+	public JPasswordField passwordField;
+	public String currentUser;
+	public ImageIcon logoIcon;
+	public JLabel logoLabel; // Logo için JLabel
 	
 	// Tables
-	private JTable inventoryTable;
-	private JTable projectTable;
-	private JTable expenseTable;
-	private JTable salesTable;
+	public JTable inventoryTable;
+	public JTable projectTable;
+	public JTable expenseTable;
+	public JTable salesTable;
 	
 	// Data models
-	private DefaultTableModel inventoryModel;
-	private DefaultTableModel projectModel;
-	private DefaultTableModel expenseModel;
-	private DefaultTableModel salesModel;
+	public static DefaultTableModel inventoryModel;
+	public DefaultTableModel projectModel;
+	public DefaultTableModel expenseModel;
+	public DefaultTableModel salesModel;
 	
 	// Data lists
-	private List<InventoryItem> inventory = new ArrayList<>();
-	private List<Project> projects = new ArrayList<>();
-	private List<Expense> expenses = new ArrayList<>();
-	private List<Sale> sales = new ArrayList<>();
+	public static List<InventoryItem> inventory = new ArrayList<>();
+	public static List<Project> projects = new ArrayList<>();
+	public static List<Expense> expenses = new ArrayList<>();
+	public static List<Sale> sales = new ArrayList<>();
 
 	// Field olarak ekle
-	private JPanel welcomeButtonPanel;
-	private JButton loginButton;
-	private JButton registerButton;
-	private JButton guestButton;
+	public JPanel welcomeButtonPanel;
+	public JButton loginButton;
+	public JButton registerButton;
+	public JButton guestButton;
 
 	/**
 	 * Create the frame.
@@ -83,7 +83,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		createWelcomeScreen();
 	}
 	
-	private void initializeComponents() {
+	public void initializeComponents() {
 		mainPanel = new JPanel();
 		mainPanel.setBackground(MODERN_BACKGROUND);
 		setContentPane(mainPanel);
@@ -110,7 +110,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		}
 	}
 	
-	private void setupMainPanel() {
+	public void setupMainPanel() {
 		mainPanel.removeAll();
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
 		mainPanel.revalidate();
@@ -135,7 +135,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		// logoLabel'ı oluştur ve panele ekle
 		logoLabel = new JLabel();
 		logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		logoLabel.setIcon(new ImageIcon("C:\\Users\\Vıctus\\OneDrive\\Masaüstü\\ce204-hw-beyza-aydin-gokcenur-haymana-java\\inventory-app\\src\\main\\resources\\images\\logo.png"));
+		logoLabel.setIcon(new ImageIcon("\\Users\\Useres\\Desktop\\ce204-hw-beyza-aydin-gokcenur-haymana-java\\inventory-app\\src\\main\\resources\\images\\logo.png"));
 		logoPanel.add(logoLabel);
 		loadLogo();
 
@@ -227,7 +227,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		});
 	}
 	
-	private void showLoginPanel() {
+	public void showLoginPanel() {
 		contentPanel.removeAll();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		contentPanel.setBackground(MODERN_BACKGROUND);
@@ -292,7 +292,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		mainPanel.repaint();
 	}
 	
-	private void showRegisterPanel() {
+	public void showRegisterPanel() {
 		contentPanel.removeAll();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		contentPanel.setBackground(MODERN_BACKGROUND);
@@ -395,7 +395,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		mainPanel.repaint();
 	}
 	
-	private void showMainMenu() {
+	public void showMainMenu() {
 		contentPanel = new JPanel();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		contentPanel.setBackground(MODERN_BACKGROUND);
@@ -452,7 +452,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		mainPanel.repaint();
 	}
 
-	private JButton createDashboardButton(String title, Color color) {
+	public static JButton createDashboardButton(String title, Color color) {
 		JButton button = new JButton(title) {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -509,7 +509,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		sideMenuPanel.add(exitButton);
 	}
 
-	private JButton createMenuButton(String text) {
+	public JButton createMenuButton(String text) {
 		JButton button = new JButton(text);
 		button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		button.setForeground(Color.WHITE);
@@ -533,7 +533,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		return button;
 	}
 
-	private void showModule(String moduleName) {
+	public void showModule(String moduleName) {
 		switch (moduleName) {
 			case "Material Inventory":
 				showMaterialInventory();
@@ -550,7 +550,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		}
 	}
 	
-	private void showMaterialInventory() {
+	public void showMaterialInventory() {
 		contentPanel.removeAll();
 		contentPanel.setLayout(new BorderLayout());
 		contentPanel.setBackground(MODERN_BACKGROUND);
@@ -637,7 +637,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		}
 	}
 
-	private void showAddMaterialDialog() {
+	public void showAddMaterialDialog() {
 		JDialog dialog = new JDialog(this, "Add Material", true);
 		dialog.getContentPane().setLayout(new BorderLayout());
 		dialog.getContentPane().setBackground(MODERN_BACKGROUND);
@@ -726,7 +726,7 @@ public class InventoryGUIWindowBuilder extends JFrame {
 		dialog.setVisible(true);
 	}
 
-	private void showEditMaterialDialog() {
+	public void showEditMaterialDialog() {
 		int selectedRow = inventoryTable.getSelectedRow();
 		if (selectedRow == -1) {
 			JOptionPane.showMessageDialog(this,
@@ -833,11 +833,12 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		dialog.setVisible(true);
 	}
 
-	private void showDeleteMaterialDialog() {
+	public void showDeleteMaterialDialog() {
 		int selectedRow = inventoryTable.getSelectedRow();
 		if (selectedRow == -1) {
 			JOptionPane.showMessageDialog(this,
 				"Please select a material to delete.",
+			
 				"No Selection",
 				JOptionPane.WARNING_MESSAGE);
 			return;
@@ -878,7 +879,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		}
 	}
 
-	private void refreshInventoryTable() {
+	public static void refreshInventoryTable() {
 		inventoryModel.setRowCount(0);
 		for (InventoryItem item : inventory) {
 			inventoryModel.addRow(new Object[]{
@@ -889,7 +890,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		}
 	}
 
-	private JTable createStyledTable(DefaultTableModel model) {
+	public JTable createStyledTable(DefaultTableModel model) {
 		JTable table = new JTable(model) {
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -921,7 +922,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		return table;
 	}
 
-	private void showProjectTracking() {
+	public void showProjectTracking() {
 		contentPanel.removeAll();
 		contentPanel.setLayout(new BorderLayout());
 		contentPanel.setBackground(MODERN_BACKGROUND);
@@ -999,7 +1000,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		}
 	}
 
-	private void showAddProjectDialog() {
+	public void showAddProjectDialog() {
 		JDialog dialog = new JDialog(this, "Add Project", true);
 		dialog.getContentPane().setLayout(new BorderLayout());
 		dialog.getContentPane().setBackground(MODERN_BACKGROUND);
@@ -1071,7 +1072,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		dialog.setVisible(true);
 	}
 
-	private void showProjectDetails() {
+	public void showProjectDetails() {
 		int selectedRow = projectTable.getSelectedRow();
 		if (selectedRow == -1) {
 			JOptionPane.showMessageDialog(this,
@@ -1089,7 +1090,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 			JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	private void showExpenseLogging() {
+	public void showExpenseLogging() {
 		contentPanel.removeAll();
 		contentPanel.setLayout(new BorderLayout());
 		contentPanel.setBackground(MODERN_BACKGROUND);
@@ -1127,7 +1128,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		mainPanel.repaint();
 	}
 
-	private void showAddExpenseDialog() {
+	public void showAddExpenseDialog() {
 		JDialog dialog = new JDialog(this, "Add Expense", true);
 		dialog.getContentPane().setLayout(new BorderLayout());
 		dialog.getContentPane().setBackground(MODERN_BACKGROUND);
@@ -1209,7 +1210,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		dialog.setVisible(true);
 	}
 
-	private void showSalesTracker() {
+	public void showSalesTracker() {
 		contentPanel.removeAll();
 		contentPanel.setLayout(new BorderLayout());
 		contentPanel.setBackground(MODERN_BACKGROUND);
@@ -1250,7 +1251,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		mainPanel.repaint();
 	}
 
-	private void showAddSaleDialog() {
+	public void showAddSaleDialog() {
 		JDialog dialog = new JDialog(this, "Add Sale", true);
 		dialog.getContentPane().setLayout(new BorderLayout());
 		dialog.getContentPane().setBackground(MODERN_BACKGROUND);
@@ -1349,7 +1350,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		dialog.setVisible(true);
 	}
 
-	private void calculateProfit() {
+	public void calculateProfit() {
 		double totalSales = 0;
 		double totalExpenses = 0;
 		
@@ -1370,7 +1371,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 			JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	private void refreshSalesTable() {
+	public void refreshSalesTable() {
 		salesModel.setRowCount(0);
 		for (Sale sale : sales) {
 			salesModel.addRow(new Object[]{
@@ -1382,7 +1383,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		}
 	}
 
-	private void showModuleDatabase(String moduleName, String tableName) {
+	public void showModuleDatabase(String moduleName, String tableName) {
 		JDialog dialog = new JDialog(this, moduleName + " - Database View", true);
 		dialog.getContentPane().setLayout(new BorderLayout());
 		dialog.getContentPane().setBackground(MODERN_BACKGROUND);
@@ -1434,7 +1435,7 @@ cancelButton.addActionListener(e -> dialog.dispose());
 		dialog.setVisible(true);
 	}
 
-	private void loadTableData(DefaultTableModel model, String tableName) {
+	public void loadTableData(DefaultTableModel model, String tableName) {
 		model.setRowCount(0);
 		try {
 			try (Connection conn = DatabaseConnection.connect();

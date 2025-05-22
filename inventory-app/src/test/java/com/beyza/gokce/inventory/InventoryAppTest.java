@@ -70,5 +70,31 @@ public class InventoryAppTest {
    * @details This method redirects the System.in and System.out streams to simulate user input and capture the output. It calls the main method of InventoryApp with a valid argument and asserts the expected behavior based on the output.
    */
   
+  @Test
+  public void testMainMethod_RunsWithoutException() {
+      String input = "4\n"; // Menüde 4 = Exit direkt çıkış
+      InputStream originalIn = System.in;
+      PrintStream originalOut = System.out;
+      ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+      try {
+          System.setIn(new ByteArrayInputStream(input.getBytes()));
+          System.setOut(new PrintStream(outContent));
+
+          Inventory.scanner = new Scanner(System.in);
+
+
+          // main çağrısı
+          InventoryApp.main(new String[0]);
+
+          String output = outContent.toString();
+          assertTrue(output.contains("1. Login")); // Menü çıktısı kontrolü
+
+      } finally {
+          System.setIn(originalIn);
+          System.setOut(originalOut);
+      }
+  }
+
 
 }

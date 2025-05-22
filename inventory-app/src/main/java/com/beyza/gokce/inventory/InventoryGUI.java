@@ -20,17 +20,17 @@ public class InventoryGUI extends JFrame {
     public static final Color TEXT_COLOR = new Color(236, 240, 241);
     public static final Color ACCENT_COLOR = new Color(231, 76, 60);
     public static final Color PANEL_COLOR = new Color(52, 73, 94);
-    public static final Color TABLE_COLOR = new Color(44, 62, 80);
-    public static final Color TABLE_HEADER_COLOR = new Color(52, 73, 94);
-    public static final Color TABLE_TEXT_COLOR = new Color(236, 240, 241);
+    public static Color TABLE_COLOR = new Color(44, 62, 80);
+    public static Color TABLE_HEADER_COLOR = new Color(52, 73, 94);
+    public static Color TABLE_TEXT_COLOR = new Color(236, 240, 241);
     
     // Yeni modern renkler
-    public static final Color MODERN_PRIMARY = new Color(26, 188, 156);
+    public static Color MODERN_PRIMARY = new Color(26, 188, 156);
     public static final Color MODERN_SECONDARY = new Color(46, 204, 113);
-    public static final Color MODERN_ACCENT = new Color(155, 89, 182);
-    public static final Color MODERN_BACKGROUND = new Color(52, 73, 94);
-    public static final Color MODERN_PANEL = new Color(44, 62, 80);
-    public static final Color MODERN_TEXT = new Color(236, 240, 241);
+    public static Color MODERN_ACCENT = new Color(155, 89, 182);
+    public static Color MODERN_BACKGROUND = new Color(52, 73, 94);
+    public static Color MODERN_PANEL = new Color(44, 62, 80);
+    public static Color MODERN_TEXT = new Color(236, 240, 241);
     
     public JPanel mainPanel;
     public JPanel sideMenuPanel;
@@ -47,13 +47,13 @@ public class InventoryGUI extends JFrame {
     public JTable salesTable;
     
     // Data models
-    public DefaultTableModel inventoryModel;
+    public static DefaultTableModel inventoryModel;
     public DefaultTableModel projectModel;
     public DefaultTableModel expenseModel;
     public DefaultTableModel salesModel;
     
     // Lists to store data
-    public List<InventoryItem> inventory = new ArrayList<>();
+    public static List<InventoryItem> inventory = new ArrayList<>();
     public List<Project> projects = new ArrayList<>();
     public List<Expense> expenses = new ArrayList<>();
     public List<Sale> sales = new ArrayList<>();
@@ -456,7 +456,7 @@ public class InventoryGUI extends JFrame {
         sideMenuPanel.add(exitButton);
     }
     
-    private void showModule(String moduleName) {
+    public void showModule(String moduleName) {
         switch (moduleName) {
             case "Material Inventory":
                 showMaterialInventory();
@@ -473,7 +473,7 @@ public class InventoryGUI extends JFrame {
         }
     }
     
-    private void showMaterialInventory() {
+    public void showMaterialInventory() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBackground(MODERN_BACKGROUND);
@@ -677,7 +677,7 @@ public class InventoryGUI extends JFrame {
         mainPanel.repaint();
     }
     
-    private void showSalesTracker() {
+    public void showSalesTracker() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBackground(MODERN_BACKGROUND);
@@ -719,7 +719,7 @@ public class InventoryGUI extends JFrame {
         mainPanel.repaint();
     }
     
-    private void showAddMaterialDialog() {
+    public void showAddMaterialDialog() {
         JDialog dialog = new JDialog(this, "Add Material", true);
         dialog.setLayout(new BorderLayout());
         dialog.getContentPane().setBackground(MODERN_BACKGROUND);
@@ -915,7 +915,7 @@ public class InventoryGUI extends JFrame {
         dialog.setVisible(true);
     }
     
-    private void showDeleteMaterialDialog() {
+    public void showDeleteMaterialDialog() {
         int selectedRow = inventoryTable.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this,
@@ -960,7 +960,7 @@ public class InventoryGUI extends JFrame {
         }
     }
     
-    private void refreshInventoryTable() {
+    public static void refreshInventoryTable() {
         inventoryModel.setRowCount(0);
         for (InventoryItem item : inventory) {
             inventoryModel.addRow(new Object[]{
@@ -971,7 +971,7 @@ public class InventoryGUI extends JFrame {
         }
     }
     
-    private void showAddProjectDialog() {
+    public void showAddProjectDialog() {
         JDialog dialog = new JDialog(this, "Add Project", true);
         dialog.setLayout(new BorderLayout());
         dialog.getContentPane().setBackground(MODERN_BACKGROUND);
@@ -1043,7 +1043,7 @@ public class InventoryGUI extends JFrame {
         dialog.setVisible(true);
     }
     
-    private void showProjectDetails() {
+    public void showProjectDetails() {
         int selectedRow = projectTable.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this,
@@ -1061,7 +1061,7 @@ public class InventoryGUI extends JFrame {
             JOptionPane.INFORMATION_MESSAGE);
     }
     
-    private void showAddExpenseDialog() {
+    public void showAddExpenseDialog() {
         JDialog dialog = new JDialog(this, "Add Expense", true);
         dialog.setLayout(new BorderLayout());
         dialog.getContentPane().setBackground(MODERN_BACKGROUND);
@@ -1143,7 +1143,7 @@ public class InventoryGUI extends JFrame {
         dialog.setVisible(true);
     }
     
-    private void showAddSaleDialog() {
+    public void showAddSaleDialog() {
         JDialog dialog = new JDialog(this, "Add Sale", true);
         dialog.setLayout(new BorderLayout());
         dialog.getContentPane().setBackground(MODERN_BACKGROUND);
@@ -1242,7 +1242,7 @@ public class InventoryGUI extends JFrame {
         dialog.setVisible(true);
     }
     
-    private void calculateProfit() {
+    public void calculateProfit() {
         double totalSales = 0;
         double totalExpenses = 0;
         
@@ -1359,7 +1359,7 @@ public class InventoryGUI extends JFrame {
         return button;
     }
     
-    private void showDatabaseManager() {
+    public void showDatabaseManager() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBackground(MODERN_BACKGROUND);
@@ -1380,9 +1380,6 @@ public class InventoryGUI extends JFrame {
         JButton restoreButton = createStyledButton("Restore DB", MODERN_SECONDARY);
         JButton clearButton = createStyledButton("Clear DB", MODERN_ACCENT);
         
-        backupButton.addActionListener(e -> backupDatabase());
-        restoreButton.addActionListener(e -> restoreDatabase());
-        clearButton.addActionListener(e -> clearDatabase());
         
         buttonPanel.add(backupButton);
         buttonPanel.add(restoreButton);
@@ -1443,109 +1440,6 @@ public class InventoryGUI extends JFrame {
                 "Error loading database info: " + e.getMessage(),
                 "Database Error",
                 JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
-    private void backupDatabase() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Save Database Backup");
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("SQLite Database", "db"));
-        
-        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            try {
-                String backupPath = fileChooser.getSelectedFile().getAbsolutePath();
-                if (!backupPath.endsWith(".db")) {
-                    backupPath += ".db";
-                }
-                
-                // Copy the database file
-                java.nio.file.Files.copy(
-                    new java.io.File("inventory_manager.db").toPath(),
-                    new java.io.File(backupPath).toPath(),
-                    java.nio.file.StandardCopyOption.REPLACE_EXISTING
-                );
-                
-                JOptionPane.showMessageDialog(this,
-                    "Database backup created successfully!",
-                    "Backup Complete",
-                    JOptionPane.INFORMATION_MESSAGE);
-            } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this,
-                    "Error creating backup: " + e.getMessage(),
-                    "Backup Error",
-                    JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-    
-    private void restoreDatabase() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Select Database Backup");
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("SQLite Database", "db"));
-        
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            int confirm = JOptionPane.showConfirmDialog(this,
-                "This will replace the current database. Are you sure?",
-                "Confirm Restore",
-                JOptionPane.YES_NO_OPTION);
-                
-            if (confirm == JOptionPane.YES_OPTION) {
-                try {
-                    String backupPath = fileChooser.getSelectedFile().getAbsolutePath();
-                    
-                    // Copy the backup file to the database location
-                    java.nio.file.Files.copy(
-                        new java.io.File(backupPath).toPath(),
-                        new java.io.File("inventory_manager.db").toPath(),
-                        java.nio.file.StandardCopyOption.REPLACE_EXISTING
-                    );
-                    
-                    JOptionPane.showMessageDialog(this,
-                        "Database restored successfully!",
-                        "Restore Complete",
-                        JOptionPane.INFORMATION_MESSAGE);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this,
-                        "Error restoring database: " + e.getMessage(),
-                        "Restore Error",
-                        JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-    }
-    
-    private void clearDatabase() {
-        int confirm = JOptionPane.showConfirmDialog(this,
-            "This will delete all data in the database. Are you sure?",
-            "Confirm Clear",
-            JOptionPane.YES_NO_OPTION);
-            
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
-        try (Connection conn = DatabaseConnection.connect();
-                     Statement stmt = conn.createStatement()) {
-                    
-                    String[] tables = {"sales", "expenses", "project_materials", "projects", "inventory", "users"};
-                    for (String table : tables) {
-                        stmt.executeUpdate("DELETE FROM " + table);
-                    }
-                    
-                    JOptionPane.showMessageDialog(this,
-                        "Database cleared successfully!",
-                        "Clear Complete",
-                        JOptionPane.INFORMATION_MESSAGE);
-                        
-                    showDatabaseManager(); // Refresh the view
-                }
-        } catch (SQLException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this,
-                    "Error clearing database: " + e.getMessage(),
-                    "Clear Error",
-                    JOptionPane.ERROR_MESSAGE);
-            }
         }
     }
     
@@ -1638,7 +1532,7 @@ public class InventoryGUI extends JFrame {
         }
     }
     
-    private JTable createStyledTable(DefaultTableModel model) {
+    public JTable createStyledTable(DefaultTableModel model) {
         JTable table = new JTable(model) {
             @Override
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -1670,7 +1564,7 @@ public class InventoryGUI extends JFrame {
         return table;
     }
     
-    private JTextField createStyledTextField() {
+    public JTextField createStyledTextField() {
         JTextField field = new JTextField() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -1693,7 +1587,7 @@ public class InventoryGUI extends JFrame {
         return field;
     }
     
-    private JPasswordField createStyledPasswordField() {
+    public JPasswordField createStyledPasswordField() {
         JPasswordField field = new JPasswordField() {
             @Override
             protected void paintComponent(Graphics g) {

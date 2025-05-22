@@ -393,7 +393,7 @@ public class Inventory {
      *
      * @return A Connection object if successful, null otherwise.
      */
-	private static Connection connect() {
+	public static Connection connect() {
 	    // Klasör yoksa oluştur
 	    File dbDir = new File("sqlite_data");
 	    if (!dbDir.exists()) {
@@ -473,7 +473,7 @@ public class Inventory {
 	 * @param user The User object containing username and password information.
 	 */
 
-	static void addUserToDatabase(User user) {
+	public static void addUserToDatabase(User user) {
 	    // Önce kullanıcının var olup olmadığını kontrol et
 	    String checkSql = "SELECT * FROM users WHERE username = ?";
 	    String insertSql = "INSERT INTO users (username, password) VALUES (?, ?)";
@@ -540,7 +540,7 @@ public class Inventory {
 	 * Loads all inventory items from the database into the inventory list.
 	 * Retrieves name, quantity, and cost fields from the inventory table.
 	 */
-	static void loadInventoryFromDatabase() {
+	public static void loadInventoryFromDatabase() {
 	    String sql = "SELECT name, quantity, cost FROM inventory";
 	    try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 	        inventory.clear(); 
@@ -615,16 +615,8 @@ public class Inventory {
  * Handles the user registration process.
  * Prompts the user for a username and password, then stores the new user in the database.
  */
-   static void register() {
-       System.out.print("Username: ");
-       String username = scanner.nextLine();
-       System.out.print("Password: ");
-       String password = scanner.nextLine();
-       User newUser = new User(username, password);
-       users.add(newUser);
-       addUserToDatabase(newUser);
-       System.out.println("Registration successful!");
-   }
+	
+
    /**
     * Handles user login by checking credentials against the stored users list.
     * 
@@ -926,6 +918,7 @@ public class Inventory {
   	    }
   	    System.out.println("Total profit: " + totalProfit + " TL");
   }
+   
 public static boolean authenticateUser(String username, String password) {
     String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
     
@@ -945,8 +938,47 @@ public static boolean authenticateUser(String username, String password) {
         return false;
         
     } catch (SQLException e) {
-        e.printStackTrace();
         return false;
     }
 }
+
+public static List<User> users1 = new ArrayList<>();
+
+public static void register() {
+    System.out.print("Username: ");
+    String username = scanner.nextLine();
+    System.out.print("Password: ");
+    String password = scanner.nextLine();
+    User newUser = new User(username, password);
+    users.add(newUser);
+    System.out.println("Registration successful!");
+}
+
+public static void runMainMenu() {
+    while (true) {
+        System.out.println("1. Login\n2. Register\n3. Guest Mode\n4. Exit");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+                login();
+                break;
+            case 2:
+                register();
+                break;
+            case 3:
+                mainMenu();
+                break;
+            case 4:
+                return;  // Testte çıkış için
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        }
+    }
+}
+
+
+
 }
