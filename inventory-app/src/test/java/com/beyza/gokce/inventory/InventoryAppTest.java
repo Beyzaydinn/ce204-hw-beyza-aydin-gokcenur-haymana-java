@@ -72,7 +72,7 @@ public class InventoryAppTest {
   
   @Test
   public void testMainMethod_RunsWithoutException() {
-      String input = "4\n"; // Menüde 4 = Exit direkt çıkış
+      String input = "4\n";
       InputStream originalIn = System.in;
       PrintStream originalOut = System.out;
       ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -83,12 +83,10 @@ public class InventoryAppTest {
 
           Inventory.scanner = new Scanner(System.in);
 
-
-          // main çağrısı
           InventoryApp.main(new String[0]);
 
           String output = outContent.toString();
-          assertTrue(output.contains("1. Login")); // Menü çıktısı kontrolü
+          assertTrue(output.contains("1. Login")); 
 
       } finally {
           System.setIn(originalIn);

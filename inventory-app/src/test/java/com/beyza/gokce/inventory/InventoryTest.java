@@ -270,28 +270,6 @@ public class InventoryTest {
 	        } catch (Exception e) {
 	        }
 	    }
-	    /*
-	    @Test
-	    public void testLoadInventoryFromDatabase_ShouldLoadInventoryCorrectly() {
-	        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:inventory_manager.db");
-	             Statement stmt = conn.createStatement()) {
-	            String insertSql = "INSERT INTO inventory (name, quantity, cost) VALUES ('TestItem', 10, 20.5)";
-	            stmt.executeUpdate(insertSql);
-	        } catch (Exception e) {
-	        }
-	        Inventory.loadInventoryFromDatabase();
-	        boolean itemFound = false;
-	        for (InventoryItem item : Inventory.inventory) {
-	            if ("TestItem".equals(item.getName())) {
-	                itemFound = true;
-	                assertEquals(10, item.getQuantity());
-	                assertEquals(20.5, item.getCost(), 0.01);
-	                break;
-	            }
-	        }
-	        assertFalse("TestItem should be loaded from the database", itemFound);
-	    }
-	    */
 	    @Test
 	    public void testListSales() {
 	        Inventory.sales = new ArrayList<>();
@@ -860,7 +838,6 @@ public class InventoryTest {
 	    
 	    @Test
 	    public void testRunMainMenu_RegisterOption() {
-	        // Giriş: 2 (register), sonra username, password, sonra 4 (exit)
 	        String input = "2\ntestuser\npass123\n4\n";
 	        InputStream originalIn = System.in;
 
@@ -868,7 +845,7 @@ public class InventoryTest {
 	            System.setIn(new ByteArrayInputStream(input.getBytes()));
 	            Scanner testScanner = new Scanner(System.in);
 
-	            Inventory.users.clear();  // Listeyi sıfırla
+	            Inventory.users.clear(); 
 	            Inventory.runMainMenu();
 
 	            boolean exists = Inventory.users1.stream()
@@ -881,23 +858,18 @@ public class InventoryTest {
 
 	    @Test
 	    public void testRunMainMenu_LoginOption_SuccessfulLogin() {
-	        // Menü seçimi: 1 → login, sonra kullanıcı adı ve şifre, sonra 4 → çıkış
 	        String input = "1\ntestuser\npass123\n4\n";
 	        InputStream originalIn = System.in;
 	        
 	        try {
 	            System.setIn(new ByteArrayInputStream(input.getBytes()));
-	            Inventory.scanner = new Scanner(System.in); // Burası çok önemli
+	            Inventory.scanner = new Scanner(System.in); 
 
 	            Inventory.users.clear();
 	            Inventory.currentUser = null;
-
-	            // Kullanıcıyı önceden listeye ekle
 	            Inventory.users.add(new User("testuser", "pass123"));
 
-	            Inventory.runMainMenu(); // login çağrılacak
-
-	            // Test: currentUser doğru mu set edildi?
+	            Inventory.runMainMenu(); 
 	            assertNotNull(Inventory.currentUser);
 	            assertEquals("testuser", Inventory.currentUser.getUsername());
 	            assertEquals("pass123", Inventory.currentUser.getPassword());
@@ -909,25 +881,19 @@ public class InventoryTest {
 
 	    @Test
 	    public void testRunMainMenu_RegisterOption_SuccessfulRegistration() {
-	        // Menü girişi: 2 → register, sonra kullanıcı adı, şifre, sonra 4 → çıkış
 	        String input = "2\nnewuser\nnewpass\n4\n";
 	        InputStream originalIn = System.in;
 
 	        try {
-	            // System.in yönlendirmesi ve scanner ayarı
 	            System.setIn(new ByteArrayInputStream(input.getBytes()));
 	            Inventory.scanner = new Scanner(System.in);
 
-	            // Kullanıcı listesi temizleniyor
 	            Inventory.users.clear();
 	            Inventory.currentUser = null;
 
-	            // Kullanıcıyı önceden listeye ekle
 	            Inventory.users.add(new User("testuser", "pass123"));
-	            // runMainMenu çağrısı
 	            Inventory.runMainMenu();
 
-	            // Test: kullanıcı listeye eklendi mi?
 	            boolean exists = Inventory.users.stream()
 	                .anyMatch(u -> u.getUsername().equals("newuser") && u.getPassword().equals("newpass"));
 	            assertTrue(exists);
@@ -939,7 +905,6 @@ public class InventoryTest {
 
 	    @Test
 	    public void testRunMainMenu_GuestModeOption_CallsMainMenu() {
-	        // Menüde: 3 (guest mode), sonra 4 (çıkış)
 	        String input = "3\n5\n4\n";
 	        InputStream originalIn = System.in;
 	        PrintStream originalOut = System.out;
@@ -947,21 +912,17 @@ public class InventoryTest {
 	        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
 	        try {
-	            // Giriş verisi ve çıktı yakalama
 	            System.setIn(new ByteArrayInputStream(input.getBytes()));
 	            System.setOut(new PrintStream(outContent));
 	            Inventory.scanner = new Scanner(System.in);
 	            Inventory.currentUser = null;
 
-	            // Kullanıcıyı önceden listeye ekle
 	            Inventory.users.add(new User("testuser", "pass123"));
 
-	            // runMainMenu çağrısı
 	            Inventory.runMainMenu();
 
-	            // Çıktı alındı mı kontrol et
 	            String output = outContent.toString();
-	            assertTrue(output.contains("Guest")); // veya mainMenu'de geçen belirgin bir kelime
+	            assertTrue(output.contains("Guest")); 
 
 	        } finally {
 	            System.setIn(originalIn);
@@ -971,7 +932,7 @@ public class InventoryTest {
 
 	    @Test
 	    public void testRunMainMenu_InvalidChoice_ShowsErrorMessage() {
-	        String input = "9\n4\n"; // 9 geçersiz, sonra 4 ile çıkış
+	        String input = "9\n4\n"; 
 	        InputStream originalIn = System.in;
 	        PrintStream originalOut = System.out;
 	        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -993,7 +954,6 @@ public class InventoryTest {
 
 	    @Test
 	    public void testLoadUsersFromDatabase() {
-	        // Test öncesi users tablosunu temizle ve örnek kullanıcılar ekle
 	        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:inventory_manager.db");
 	             Statement stmt = conn.createStatement()) {
 
@@ -1005,8 +965,6 @@ public class InventoryTest {
 	        } catch (SQLException e) {
 	            fail("Test setup failed: " + e.getMessage());
 	        }
-
-	        // Kullanıcı listesini yükle
 	        Inventory.loadInventoryFromDatabase();
 
 
@@ -1025,7 +983,6 @@ public class InventoryTest {
 
 	    @Test
 	    public void testAddUserToDatabase() {
-	        // Veritabanını temizle
 	        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:inventory_manager.db");
 	             Statement stmt = conn.createStatement()) {
 
@@ -1034,33 +991,28 @@ public class InventoryTest {
 
 	        } catch (SQLException e) {
 	        }
-
-	        // Kullanıcı ekle
 	        User newUser = new User("testuser", "testpass");
 	        try {
 	            Inventory.addUserToDatabase(newUser);
 	        } catch (Exception e) {
-	            fail("Kullanıcı ekleme başarısız: " + e.getMessage());
+	            fail("Adding user failed: " + e.getMessage());
 	        }
-
-	        // Eklenip eklenmediğini kontrol et
 	        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:inventory_manager.db");
 	             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE username = ?")) {
 
 	            stmt.setString(1, "testuser");
 	            ResultSet rs = stmt.executeQuery();
 
-	            assertTrue("Kullanıcı veritabanında bulunamadı", rs.next());
+	            assertTrue("User not found in database", rs.next());
 	            assertEquals("testuser", rs.getString("username"));
 	            assertEquals("testpass", rs.getString("password"));
 
 	        } catch (SQLException e) {
 	        }
 
-	        // Aynı kullanıcıyı tekrar eklemeye çalış ve hata bekle
 	        try {
 	            Inventory.addUserToDatabase(newUser);
-	            fail("Aynı kullanıcı ikinci kez eklenmemeli");
+	            fail("The same user should not be added twice.");
 	        } catch (RuntimeException e) {
 	            assertTrue(e.getMessage().contains("Username already exists"));
 	        }
@@ -1068,7 +1020,6 @@ public class InventoryTest {
 
 	    @Test
 	    public void testConnectMethodCreatesDirectoryAndReturnsConnection() {
-	        // sqlite_data klasörü varsa sil (temiz başlamak için)
 	        File dbDir = new File("sqlite_data");
 	        if (dbDir.exists()) {
 	            for (File file : dbDir.listFiles()) {
@@ -1077,16 +1028,13 @@ public class InventoryTest {
 	            dbDir.delete();
 	        }
 
-	        // Bağlantıyı test et
 	        Connection conn = Inventory.connect();
-	        assertNotNull("connect() null döndürmemeli", conn);
+	        assertNotNull("connect() should not return null", conn);
 
-	        // Klasör oluşmuş mu?
 	        File expectedDir = new File("sqlite_data");
-	        assertTrue("sqlite_data klasörü oluşturulmalı", expectedDir.exists());
-	        assertTrue("sqlite_data klasörü olmalı", expectedDir.isDirectory());
+	        assertTrue("sqlite_data folder must be created", expectedDir.exists());
+	        assertTrue("There should be a sqlite_data folde", expectedDir.isDirectory());
 
-	        // Bağlantıyı kapat
 	        try {
 	            conn.close();
 	        } catch (SQLException e) {
@@ -1095,30 +1043,25 @@ public class InventoryTest {
 
 	    @Test
 	    public void testAuthenticateUser() {
-	        // Veritabanını temizle ve tabloyu oluştur
 	        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:inventory_manager.db");
 	             Statement stmt = conn.createStatement()) {
 
 	            stmt.execute("DROP TABLE IF EXISTS users");
 	            stmt.execute("CREATE TABLE users (username TEXT PRIMARY KEY, password TEXT)");
 
-	            // Test için bir kullanıcı ekle
 	            stmt.execute("INSERT INTO users (username, password) VALUES ('testuser', 'testpass')");
 
 	        } catch (SQLException e) {
 	        }
 
-	        // 1. Doğru bilgilerle giriş başarılı olmalı
 	        boolean success = Inventory.authenticateUser("testuser", "testpass");
-	        assertTrue("Doğru bilgilerle giriş başarısız", success);
+	        assertTrue("Login is not successfull", success);
 
-	        // 2. Yanlış şifre ile giriş başarısız olmalı
 	        boolean wrongPassword = Inventory.authenticateUser("testuser", "wrongpass");
-	        assertFalse("Yanlış şifre ile giriş başarılı olmamalı", wrongPassword);
+	        assertFalse("Login with wrong password should not be successful", wrongPassword);
 
-	        // 3. Olmayan kullanıcı ile giriş başarısız olmalı
 	        boolean unknownUser = Inventory.authenticateUser("unknownuser", "nopass");
-	        assertFalse("Olmayan kullanıcı ile giriş başarılı olmamalı", unknownUser);
+	        assertFalse("Login with a non-existent user should not be successful.", unknownUser);
 	    }
 
 	

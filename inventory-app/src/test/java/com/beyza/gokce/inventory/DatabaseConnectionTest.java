@@ -61,7 +61,7 @@ public class DatabaseConnectionTest {
 	     assertNotNull("Connection should not be null if successful", conn);
 	     try {
 	         assertFalse("Connection should be open", conn.isClosed());
-	         conn.close(); // Temizleme işlemi
+	         conn.close();
 	     } catch (SQLException e) {
 	     }
 	 }

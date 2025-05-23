@@ -183,7 +183,7 @@ public class InventoryGUITest {
             }
         }
 
-        assertNotNull("Login button bulunamadı", loginButton);
+        assertNotNull("Login button don't found", loginButton);
 
     }
     
@@ -216,10 +216,10 @@ public class InventoryGUITest {
             }
         }
 
-        assertTrue("Başlık etiketi bulunamadı", foundTitle);
-        assertTrue("Username etiketi bulunamadı", foundUsername);
-        assertTrue("Password etiketi bulunamadı", foundPassword);
-        assertTrue("Confirm Password etiketi bulunamadı", foundConfirm);
+        assertTrue("Baslik don't found", foundTitle);
+        assertTrue("Username don't found", foundUsername);
+        assertTrue("Password don't found", foundPassword);
+        assertTrue("Confirm Password don't found", foundConfirm);
     }
 
     @Test
@@ -233,7 +233,7 @@ public class InventoryGUITest {
 
         JButton registerButton = findButton(contentPanel, "Register");
 
-        assertNotNull("Register butonu bulunamadı", registerButton);
+        assertNotNull("Register button don't found", registerButton);
         SwingUtilities.invokeLater(() -> registerButton.doClick());
     }
 
@@ -246,7 +246,7 @@ public class InventoryGUITest {
         JPanel contentPanel = (JPanel) getPrivateField1(gui, "contentPanel");
 
         JPanel formPanel = findPanel(contentPanel, 6);
-        assertNotNull("Form panel bulunamadi", formPanel);
+        assertNotNull("Form panel don't found", formPanel);
 
         JTextField usernameField = (JTextField) formPanel.getComponent(1);
         JPasswordField passwordField = (JPasswordField) formPanel.getComponent(3);
@@ -480,13 +480,10 @@ public class InventoryGUITest {
     
     @Test
     public void testShowAddSaleDialog_Basic() throws Exception {
-        // Metodu reflection ile çağır
         Method showAddSaleDialog = InventoryGUI.class.getDeclaredMethod("showAddSaleDialog");
         showAddSaleDialog.setAccessible(true);
 
         gui.showAddSaleDialog();
-
-        // Açık JDialog'ları kontrol et (Dialogun açıldığını doğrulamak için)
         boolean dialogFound = false;
         for (Window window : Window.getWindows()) {
             if (window instanceof JDialog && window.isVisible()) {
@@ -500,12 +497,8 @@ public class InventoryGUITest {
     @Test
     public void testCalculateProfit_DoesNotThrow() {
         InventoryGUI gui = new InventoryGUI();
-
-        // Satış ve gider listelerini başlat
         gui.sales = new ArrayList<>();
         gui.expenses = new ArrayList<>();
-
-        // Örnek satış ve gider verileri ekle
         gui.sales.add(new Sale("Item1", 2, 50.0));
         gui.sales.add(new Sale("Item2", 1, 100.0));
         gui.expenses.add(new Expense("Expense1", 30.0));
@@ -522,27 +515,18 @@ public class InventoryGUITest {
     @Test
     public void testShowAddExpenseDialog_DoesNotThrow() {
         InventoryGUI gui = new InventoryGUI();
-
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
-
-        // Gerekli sabitleri tanımla (varsayılan renkler ile)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PANEL = Color.LIGHT_GRAY;
         gui.MODERN_TEXT = Color.BLACK;
-
-        // Test: sadece hata fırlatmadığını kontrol ediyoruz
-        // (Dialog UI ve event'ler GUI etkileşimi gerektirir, burada sadece çağırıyoruz)
         gui.showAddExpenseDialog();
     }
 
     @Test
     public void testShowDatabaseManager_DoesNotThrow() {
         InventoryGUI gui = new InventoryGUI();
-
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
@@ -551,54 +535,35 @@ public class InventoryGUITest {
         gui.TABLE_COLOR = Color.LIGHT_GRAY;
         gui.TABLE_TEXT_COLOR = Color.BLACK;
         gui.TABLE_HEADER_COLOR = Color.DARK_GRAY;
-        
-
-        // Test: sadece hata fırlatmadığını kontrol ediyoruz
-        // (Dialog UI ve event'ler GUI etkileşimi gerektirir, burada sadece çağırıyoruz)
         gui.showDatabaseManager();
     }
     
     @Test
     public void testShowMaterialInventory_DoesNotThrow() {
         InventoryGUI gui = new InventoryGUI();
-
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
-
-        // Gerekli sabitleri tanımla (varsayılan renkler ile)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PRIMARY = Color.LIGHT_GRAY;
         gui.MODERN_TEXT = Color.BLACK;
         gui.TABLE_COLOR = Color.WHITE;
-
-        // En azından boş inventory listesi
         gui.inventory = new ArrayList<>();
-
-        // Test: sadece hata fırlatmıyor mu kontrol ediyoruz
         gui.showMaterialInventory();
     }
     
     @Test
     public void testShowProjectTracking_DoesNotThrow() {
     	InventoryGUI gui = new InventoryGUI();
-
-        // Gerekli panelleri ve model nesnelerini hazırla
         gui.projectModel = new DefaultTableModel(new String[]{"Project Name"}, 0);
         gui.projectTable = new JTable(gui.projectModel);
 
-        // GUI panellerini elle oluştur
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
         gui.MODERN_BACKGROUND = Color.WHITE;
-
-        // Test 1: Satır seçilmemiş durumda - uyarı mesajı çıkar ama hata fırlatmaz
         gui.projectTable.clearSelection();
         gui.showProjectTracking();
-
-        // Test 2: Bir satır seçilmiş durumda
         gui.projectModel.addRow(new Object[]{"Test Project"});
         gui.projectTable.setRowSelectionInterval(0, 0);
         gui.showProjectTracking();
@@ -607,41 +572,28 @@ public class InventoryGUITest {
     @Test
     public void testShowAddMaterialDialog_DoesNotThrow() {
         InventoryGUI gui = new InventoryGUI();
-
-        // Gerekli sabit renkleri varsayılan değerlerle tanımlıyoruz
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PANEL = Color.LIGHT_GRAY;
         gui.MODERN_TEXT = Color.BLACK;
-
-        // Test sırasında dialog açılacak, bunu engellemek istemiyorsak visible olacak
-        // Burada sadece hata fırlatmadığını kontrol ediyoruz
         gui.showAddMaterialDialog();
     }
     
     @Test
     public void testShowSalesTracker_DoesNotThrow() throws Exception {
     	InventoryGUI gui = new InventoryGUI();
-
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
-
-        // Gerekli sabitleri tanımla (örnek renklerle)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_TEXT = Color.BLACK;
-
-        // Test: sadece hata fırlatmıyor mu kontrol ediyoruz (GUI thread içinde çalıştır)
         SwingUtilities.invokeAndWait(() -> gui.showSalesTracker());
     }
     
     @Test
     public void testRefreshInventoryTable_DoesNotThrow() {
-        // Öncelikle inventory ve inventoryModel static alanların uygun şekilde hazırlanması gerekir
         InventoryGUI.inventory = new ArrayList<>();
         InventoryGUI.inventoryModel = new DefaultTableModel(new String[]{"Name", "Quantity", "Cost"}, 0);
 
-        // Örnek veri ekleyelim (opsiyonel)
         InventoryGUI.inventory.add(new InventoryItem("Test Item", 10, 15.5));
 
         InventoryGUI.refreshInventoryTable();
@@ -650,8 +602,6 @@ public class InventoryGUITest {
     @Test
     public void testShowAddProjectDialog_DoesNotThrow() throws Exception {
     	InventoryGUI gui = new InventoryGUI();
-
-        // Gerekli panelleri elle başlat ve sabitleri ayarla
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
@@ -659,32 +609,23 @@ public class InventoryGUITest {
         gui.MODERN_PANEL = Color.LIGHT_GRAY;
         gui.MODERN_TEXT = Color.BLACK;
 
-        // Boş model hazırla (insert sonrası ekleme için)
         gui.projectModel = new DefaultTableModel(new String[]{"Project Name"}, 0);
 
-        // EDT içinde dialog'u çağır
         SwingUtilities.invokeAndWait(() -> gui.showAddProjectDialog());
     }
     
     @Test
     public void testShowProjectDetails_DoesNotThrow() {
     	InventoryGUI gui = new InventoryGUI();
-
-        // Gerekli panelleri ve model nesnelerini hazırla
         gui.projectModel = new DefaultTableModel(new String[]{"Project Name"}, 0);
         gui.projectTable = new JTable(gui.projectModel);
 
-        // GUI panellerini elle oluştur
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
         gui.MODERN_BACKGROUND = Color.WHITE;
-
-        // Test 1: Satır seçilmemiş durumda - uyarı mesajı çıkar ama hata fırlatmaz
         gui.projectTable.clearSelection();
         gui.showProjectDetails();
-
-        // Test 2: Bir satır seçilmiş durumda
         gui.projectModel.addRow(new Object[]{"Test Project"});
         gui.projectTable.setRowSelectionInterval(0, 0);
         gui.showProjectDetails();
@@ -694,13 +635,12 @@ public class InventoryGUITest {
     public void testCreateStyledTable_DoesNotThrow() {
         InventoryGUI gui = new InventoryGUI();
 
-        // Örnek tablo modeli oluştur
         String[] columns = {"Column1", "Column2"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
 
         {
             JTable table = gui.createStyledTable(model);
-            assertNotNull(table); // Tablo null değilse başarılı
+            assertNotNull(table); 
         };
     }
     
@@ -708,13 +648,10 @@ public class InventoryGUITest {
     public void testShowDeleteMaterialDialog_NoSelection() {
         InventoryGUI gui = new InventoryGUI();
 
-        // Tabloyu başlat
         String[] columns = {"Name", "Quantity", "Cost"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         JTable table = new JTable(model);
         gui.inventoryTable = table;
-
-        // Herhangi bir seçim yapılmamışken çağır
         gui.showDeleteMaterialDialog();
     }
     
@@ -722,18 +659,15 @@ public class InventoryGUITest {
     public void testShowExpenseLogging_DoesNotThrow() throws Exception {
         InventoryGUI gui = new InventoryGUI();
 
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
 
-        // Gerekli sabitleri tanımla (örnek renkler)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_ACCENT = Color.GRAY;
         gui.MODERN_PRIMARY = Color.BLUE;
         gui.MODERN_TEXT = Color.BLACK;
 
-        // GUI kodunu EDT (Event Dispatch Thread) üzerinde çalıştır
         SwingUtilities.invokeAndWait(() -> gui.showExpenseLogging());
     }
     
@@ -741,18 +675,15 @@ public class InventoryGUITest {
     public void testShowModule_DoesNotThrow() throws Exception {
         InventoryGUI gui = new InventoryGUI();
 
-        // Gerekli panelleri başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
 
-        // Renk sabitleri
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_ACCENT = Color.LIGHT_GRAY;
         gui.MODERN_PRIMARY = Color.BLUE;
         gui.MODERN_TEXT = Color.BLACK;
 
-        // GUI işlemlerini Event Dispatch Thread içinde test et
         SwingUtilities.invokeAndWait(() -> {
             gui.showModule("Material Inventory");
             gui.showModule("Project Tracking");
@@ -768,13 +699,10 @@ public class InventoryGUITest {
             InventoryGUI gui = new InventoryGUI();
             gui.showAddMaterialDialog();
         });
-
-        // Robot 1 saniye sonra Cancel butonuna tıklayacak
         Thread.sleep(1000);
         Robot robot = new Robot();
         robot.setAutoDelay(200);
 
-        // ESC tuşu dialogu kapatır (Cancel yerine geçer)
         robot.keyPress(KeyEvent.VK_ESCAPE);
         robot.keyRelease(KeyEvent.VK_ESCAPE);
     }
@@ -785,30 +713,24 @@ public class InventoryGUITest {
             try {
                 InventoryGUI gui = new InventoryGUI();
 
-                // Temel panel yapılandırmaları
                 gui.mainPanel = new JPanel();
                 gui.contentPanel = new JPanel();
                 gui.sideMenuPanel = new JPanel();
-
-                // Gerekli renk sabitleri tanımlanmalı (sahte değerler atayalım)
                 gui.MODERN_BACKGROUND = java.awt.Color.WHITE;
                 gui.MODERN_PANEL = java.awt.Color.LIGHT_GRAY;
                 gui.MODERN_TEXT = java.awt.Color.BLACK;
                 gui.MODERN_PRIMARY = java.awt.Color.BLUE;
                 gui.MODERN_ACCENT = java.awt.Color.RED;
 
-                // Fonksiyon çağrılır, test sadece hata fırlatmamasını kontrol eder
                 gui.showAddMaterialDialog();
 
             } catch (Exception e) {
-                // Test başarısız olursa sebebini yaz
-                org.junit.Assert.fail("Dialog çalıştırılırken istisna oluştu: " + e.getMessage());
+                org.junit.Assert.fail("Dialog is not study " + e.getMessage());
             }
         });
 
-        // Test thread'inin kapanması için kısa bir bekleme süresi
         try {
-            Thread.sleep(3000); // Dialog açıldıktan sonra 3 saniye bekle
+            Thread.sleep(3000); 
         } catch (InterruptedException ignored) {}
     }
     
@@ -818,19 +740,14 @@ public class InventoryGUITest {
             try {
                 InventoryGUI gui = new InventoryGUI();
 
-                // Renk sabitlerini atayalım
                 gui.MODERN_BACKGROUND = Color.WHITE;
                 gui.MODERN_PANEL = Color.LIGHT_GRAY;
                 gui.MODERN_TEXT = Color.BLACK;
                 gui.MODERN_PRIMARY = Color.BLUE;
                 gui.MODERN_ACCENT = Color.RED;
-
-                // Gerekli paneller (boş paneller yeterli)
                 gui.mainPanel = new JPanel();
                 gui.contentPanel = new JPanel();
                 gui.sideMenuPanel = new JPanel();
-
-                // Dialog'u göster (modal olduğundan ayrı thread gerekir)
                 new Thread(gui::showAddMaterialDialog).start();
 
             } catch (Exception e) {
@@ -839,50 +756,44 @@ public class InventoryGUITest {
         });
 
         try {
-            // Dialogun yüklenmesini bekle
             Thread.sleep(1000);
 
             Robot robot = new Robot();
             robot.setAutoDelay(100);
 
-            // Ad alanı: "Test Material"
             typeText(robot, "Test Material");
-            robot.keyPress(KeyEvent.VK_TAB); // Quantity alanına geç
+            robot.keyPress(KeyEvent.VK_TAB); 
             robot.keyRelease(KeyEvent.VK_TAB);
 
             // Quantity: "5"
             typeText(robot, "5");
-            robot.keyPress(KeyEvent.VK_TAB); // Cost alanına geç
+            robot.keyPress(KeyEvent.VK_TAB);
             robot.keyRelease(KeyEvent.VK_TAB);
 
             // Cost: "19.99"
             typeText(robot, "19.99");
 
-            // Add butonuna ulaşmak için tekrar TAB'la
-            robot.keyPress(KeyEvent.VK_TAB); robot.keyRelease(KeyEvent.VK_TAB); // geçiş 1 (Add)
-            robot.keyPress(KeyEvent.VK_TAB); robot.keyRelease(KeyEvent.VK_TAB); // geçiş 2 (Cancel)
+            robot.keyPress(KeyEvent.VK_TAB); robot.keyRelease(KeyEvent.VK_TAB); 
+            robot.keyPress(KeyEvent.VK_TAB); robot.keyRelease(KeyEvent.VK_TAB); 
             robot.keyPress(KeyEvent.VK_SHIFT);
-            robot.keyPress(KeyEvent.VK_TAB); robot.keyRelease(KeyEvent.VK_TAB); // geri (Add)
+            robot.keyPress(KeyEvent.VK_TAB); robot.keyRelease(KeyEvent.VK_TAB); 
             robot.keyRelease(KeyEvent.VK_SHIFT);
 
-            // ENTER ile Add butonuna bas
             robot.keyPress(KeyEvent.VK_ENTER);
             robot.keyRelease(KeyEvent.VK_ENTER);
 
-            // İşlem sonrası kapanmasını bekle
             Thread.sleep(2000);
 
         } catch (Exception e) {
-            org.junit.Assert.fail("Robot işlemi sırasında hata oluştu: " + e.getMessage());
+            org.junit.Assert.fail("\r\n"+ "An error occurred during robot operation.: " + e.getMessage());
         }
     }
     
-    // Yardımcı fonksiyon: klavye ile yazı yaz
     public void typeText(Robot robot, String text) {
         for (char c : text.toCharArray()) {
             int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
             if (KeyEvent.CHAR_UNDEFINED == keyCode) {
-                throw new RuntimeException("Yazılamayan karakter: " + c);
+                throw new RuntimeException("\r\n"+ "Unprintable character " + c);
             }
             robot.keyPress(keyCode);
             robot.keyRelease(keyCode);

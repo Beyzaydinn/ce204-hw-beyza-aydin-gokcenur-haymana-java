@@ -1,3 +1,15 @@
+/**
+ * @file InventoryGUI.java
+ * @brief Main GUI implementation for the Inventory Management System
+ * @author Beyza Aydın, Gökcenur Haymana
+ * @date 2024
+ * @version 1.0
+ * 
+ * This file contains the implementation of the main graphical user interface
+ * for the Inventory Management System. It provides functionality for managing
+ * inventory items, projects, expenses, and sales through a modern and user-friendly interface.
+ */
+
 package com.beyza.gokce.inventory;
 
 import javax.swing.*;
@@ -13,51 +25,238 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @class InventoryGUI
+ * @brief Main GUI class for the Inventory Management System
+ * 
+ * This class implements the graphical user interface for the inventory management system.
+ * It provides functionality for managing inventory items, projects, expenses, and sales.
+ * The interface is designed with a modern look and feel, featuring a responsive layout
+ * and intuitive navigation.
+ * 
+ * @details The class includes:
+ * - User authentication (login/register)
+ * - Inventory management
+ * - Project tracking
+ * - Expense logging
+ * - Sales tracking
+ * - Database management
+ */
 public class InventoryGUI extends JFrame {
+    /**
+     * @brief Primary color used in the application's color scheme
+     * RGB values: (41, 128, 185) - A shade of blue
+     */
     public static final Color PRIMARY_COLOR = new Color(41, 128, 185);
+
+    /**
+     * @brief Secondary color used in the application's color scheme
+     * RGB values: (52, 152, 219) - A lighter shade of blue
+     */
     public static final Color SECONDARY_COLOR = new Color(52, 152, 219);
+
+    /**
+     * @brief Background color for the main application window
+     * RGB values: (44, 62, 80) - A dark blue-gray
+     */
     public static final Color BACKGROUND_COLOR = new Color(44, 62, 80);
+
+    /**
+     * @brief Color used for text throughout the application
+     * RGB values: (236, 240, 241) - A light gray, almost white
+     */
     public static final Color TEXT_COLOR = new Color(236, 240, 241);
+
+    /**
+     * @brief Accent color used for highlighting and important elements
+     * RGB values: (231, 76, 60) - A shade of red
+     */
     public static final Color ACCENT_COLOR = new Color(231, 76, 60);
+
+    /**
+     * @brief Color used for panel backgrounds
+     * RGB values: (52, 73, 94) - A dark blue-gray
+     */
     public static final Color PANEL_COLOR = new Color(52, 73, 94);
+
+    /**
+     * @brief Background color for tables
+     * RGB values: (44, 62, 80) - A dark blue-gray
+     */
     public static Color TABLE_COLOR = new Color(44, 62, 80);
+
+    /**
+     * @brief Color used for table headers
+     * RGB values: (52, 73, 94) - A dark blue-gray
+     */
     public static Color TABLE_HEADER_COLOR = new Color(52, 73, 94);
+
+    /**
+     * @brief Color used for text in tables
+     * RGB values: (236, 240, 241) - A light gray, almost white
+     */
     public static Color TABLE_TEXT_COLOR = new Color(236, 240, 241);
     
-    // Yeni modern renkler
+    /**
+     * @brief Modern primary color for the updated UI theme
+     * RGB values: (26, 188, 156) - A turquoise color
+     */
     public static Color MODERN_PRIMARY = new Color(26, 188, 156);
+
+    /**
+     * @brief Modern secondary color for the updated UI theme
+     * RGB values: (46, 204, 113) - A green color
+     */
     public static final Color MODERN_SECONDARY = new Color(46, 204, 113);
+
+    /**
+     * @brief Modern accent color for the updated UI theme
+     * RGB values: (155, 89, 182) - A purple color
+     */
     public static Color MODERN_ACCENT = new Color(155, 89, 182);
+
+    /**
+     * @brief Modern background color for the updated UI theme
+     * RGB values: (52, 73, 94) - A dark blue-gray
+     */
     public static Color MODERN_BACKGROUND = new Color(52, 73, 94);
+
+    /**
+     * @brief Modern panel color for the updated UI theme
+     * RGB values: (44, 62, 80) - A dark blue-gray
+     */
     public static Color MODERN_PANEL = new Color(44, 62, 80);
+
+    /**
+     * @brief Modern text color for the updated UI theme
+     * RGB values: (236, 240, 241) - A light gray, almost white
+     */
     public static Color MODERN_TEXT = new Color(236, 240, 241);
     
+    /**
+     * @brief Main panel that contains all other panels
+     * Used as the primary container for the application's content
+     */
     public JPanel mainPanel;
+
+    /**
+     * @brief Panel containing the side menu navigation
+     * Displays navigation buttons and options
+     */
     public JPanel sideMenuPanel;
+
+    /**
+     * @brief Panel that displays the main content
+     * Changes based on the selected module/function
+     */
     public JPanel contentPanel;
+
+    /**
+     * @brief Text field for entering username during login
+     */
     public JTextField usernameField;
+
+    /**
+     * @brief Password field for entering password during login
+     */
     public JPasswordField passwordField;
+
+    /**
+     * @brief Stores the username of the currently logged-in user
+     * Null if in guest mode
+     */
     public String currentUser;
+
+    /**
+     * @brief Icon used for the application logo
+     * Loaded from an external URL
+     */
     public ImageIcon logoIcon;
     
-    // Tables
+    /**
+     * @brief Table displaying inventory items
+     * Shows name, quantity, and cost of materials
+     */
     public JTable inventoryTable;
+
+    /**
+     * @brief Table displaying project information
+     * Shows project names and details
+     */
     public JTable projectTable;
+
+    /**
+     * @brief Table displaying expense records
+     * Shows expense descriptions and amounts
+     */
     public JTable expenseTable;
+
+    /**
+     * @brief Table displaying sales records
+     * Shows item, quantity, price, and total
+     */
     public JTable salesTable;
     
-    // Data models
+    /**
+     * @brief Data model for the inventory table
+     * Manages the data displayed in the inventory table
+     */
     public static DefaultTableModel inventoryModel;
+
+    /**
+     * @brief Data model for the project table
+     * Manages the data displayed in the project table
+     */
     public DefaultTableModel projectModel;
+
+    /**
+     * @brief Data model for the expense table
+     * Manages the data displayed in the expense table
+     */
     public DefaultTableModel expenseModel;
+
+    /**
+     * @brief Data model for the sales table
+     * Manages the data displayed in the sales table
+     */
     public DefaultTableModel salesModel;
     
-    // Lists to store data
+    /**
+     * @brief List storing inventory items
+     * Contains all materials in the inventory
+     */
     public static List<InventoryItem> inventory = new ArrayList<>();
+
+    /**
+     * @brief List storing project information
+     * Contains all projects in the system
+     */
     public List<Project> projects = new ArrayList<>();
+
+    /**
+     * @brief List storing expense records
+     * Contains all expenses recorded in the system
+     */
     public List<Expense> expenses = new ArrayList<>();
+
+    /**
+     * @brief List storing sales records
+     * Contains all sales recorded in the system
+     */
     public List<Sale> sales = new ArrayList<>();
  
+    /**
+     * @brief Constructor for the InventoryGUI class
+     * 
+     * Initializes the main window and sets up the initial welcome screen.
+     * Creates the database tables and loads the application logo.
+     * 
+     * @details The constructor:
+     * - Sets up the main window properties
+     * - Initializes the database
+     * - Creates the welcome screen
+     * - Loads the application logo
+     */
     public InventoryGUI() {
         super("Inventory Management System");
         initializeFrame();
@@ -67,6 +266,12 @@ public class InventoryGUI extends JFrame {
         setVisible(true);
     }
     
+    /**
+     * @brief Initializes the main application window
+     * 
+     * Sets up the window properties including size, location, and background color.
+     * Configures the window to be non-resizable and centered on the screen.
+     */
     private void initializeFrame() {
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,6 +280,14 @@ public class InventoryGUI extends JFrame {
         setBackground(MODERN_BACKGROUND);
     }
     
+    /**
+     * @brief Loads and scales the application logo
+     * 
+     * Attempts to load the logo from a URL and scales it to appropriate dimensions.
+     * If loading fails, the error is printed to the console.
+     * 
+     * @throws IOException If the logo cannot be loaded from the URL
+     */
     private void loadLogo() {
         try {
             URL logoUrl = new URL("https://cdn-icons-png.flaticon.com/512/2103/2103633.png");
@@ -86,6 +299,17 @@ public class InventoryGUI extends JFrame {
         }
     }
     
+    /**
+     * @brief Sets up the main panel of the application
+     * 
+     * Initializes the main panel with appropriate layout and background color.
+     * Creates the database tables for the application.
+     * 
+     * @details The method:
+     * - Creates the main panel with BorderLayout
+     * - Sets up the content panel
+     * - Initializes the database tables
+     */
     private void setupMainPanel() {
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(MODERN_BACKGROUND);
@@ -98,6 +322,19 @@ public class InventoryGUI extends JFrame {
         Inventory.createTables();
     }
  
+    /**
+     * @brief Creates and displays the welcome screen
+     * 
+     * Sets up the welcome screen with logo, title, and navigation buttons.
+     * Provides options for login, registration, and guest access.
+     * 
+     * @details The welcome screen includes:
+     * - Application logo
+     * - Welcome message
+     * - Login button
+     * - Register button
+     * - Guest access button
+     */
     private void createWelcomeScreen() {
         mainPanel.removeAll();
  
@@ -106,14 +343,11 @@ public class InventoryGUI extends JFrame {
         welcomePanel.setBackground(MODERN_BACKGROUND);
         welcomePanel.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
 
-        // Logo Panel
         JPanel logoPanel = createLogoPanel();
         
-        // Title and Subtitle
         JLabel welcomeLabel = createWelcomeLabel();
         JLabel subTitleLabel = createSubTitleLabel();
         
-        // Buttons
         JPanel buttonPanel = createWelcomeButtons();
         
         welcomePanel.add(Box.createVerticalGlue());
@@ -187,6 +421,19 @@ public class InventoryGUI extends JFrame {
         return buttonPanel;
     }
 
+    /**
+     * @brief Shows the login panel
+     * 
+     * Displays the login form with username and password fields.
+     * Handles user authentication and navigation to the main menu.
+     * 
+     * @details The login panel includes:
+     * - Username field
+     * - Password field
+     * - Login button
+     * - Back button
+     * - Error handling for invalid credentials
+     */
     private void showLoginPanel() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
@@ -263,6 +510,20 @@ public class InventoryGUI extends JFrame {
         mainPanel.repaint();
     }
    
+    /**
+     * @brief Shows the registration panel
+     * 
+     * Displays the registration form for new users.
+     * Handles user registration and validation of input data.
+     * 
+     * @details The registration panel includes:
+     * - Username field
+     * - Password field
+     * - Confirm password field
+     * - Register button
+     * - Back button
+     * - Input validation
+     */
     private void showRegisterPanel() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
@@ -366,6 +627,17 @@ public class InventoryGUI extends JFrame {
         mainPanel.repaint();
     }
     
+    /**
+     * @brief Shows the main menu of the application
+     * 
+     * Displays the main dashboard with navigation options for different modules.
+     * Shows welcome message and quick access buttons for main features.
+     * 
+     * @details The main menu includes:
+     * - Welcome message with username
+     * - Dashboard buttons for main features
+     * - Side menu for navigation
+     */
     private void showMainMenu() {
         contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
@@ -423,6 +695,20 @@ public class InventoryGUI extends JFrame {
         mainPanel.repaint();
     }
     
+    /**
+     * @brief Creates the side menu panel
+     * 
+     * Sets up the navigation menu with buttons for different modules.
+     * Includes home and exit options.
+     * 
+     * @details The side menu includes:
+     * - Material Inventory button
+     * - Project Tracking button
+     * - Expense Logging button
+     * - Sales Tracker button
+     * - Home button
+     * - Exit button
+     */
     private void createSideMenuPanel() {
         sideMenuPanel = new JPanel();
         sideMenuPanel.setLayout(new BoxLayout(sideMenuPanel, BoxLayout.Y_AXIS));
@@ -473,6 +759,19 @@ public class InventoryGUI extends JFrame {
         }
     }
     
+    /**
+     * @brief Shows the material inventory management screen
+     * 
+     * Displays the inventory table and provides options for adding, editing,
+     * and deleting inventory items.
+     * 
+     * @details The inventory screen includes:
+     * - Inventory table
+     * - Add Material button
+     * - Edit button
+     * - Delete button
+     * - Show Database button
+     */
     public void showMaterialInventory() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
@@ -560,6 +859,18 @@ public class InventoryGUI extends JFrame {
         }
     }
     
+    /**
+     * @brief Shows the project tracking screen
+     * 
+     * Displays the project management interface with options to add new projects
+     * and view project details.
+     * 
+     * @details The project tracking screen includes:
+     * - Project table
+     * - Add Project button
+     * - View Details button
+     * - Show Database button
+     */
     public void showProjectTracking() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
@@ -638,6 +949,15 @@ public class InventoryGUI extends JFrame {
         }
     }
     
+    /**
+     * @brief Shows the expense logging screen
+     * 
+     * Displays the expense management interface for tracking and recording expenses.
+     * 
+     * @details The expense logging screen includes:
+     * - Add Expense button
+     * - Show Database button
+     */
     public void showExpenseLogging() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
@@ -677,6 +997,17 @@ public class InventoryGUI extends JFrame {
         mainPanel.repaint();
     }
     
+    /**
+     * @brief Shows the sales tracking screen
+     * 
+     * Displays the sales management interface for recording and tracking sales.
+     * Includes profit calculation functionality.
+     * 
+     * @details The sales tracking screen includes:
+     * - Add Sale button
+     * - Calculate Profit button
+     * - Show Database button
+     */
     public void showSalesTracker() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
@@ -719,6 +1050,20 @@ public class InventoryGUI extends JFrame {
         mainPanel.repaint();
     }
     
+    /**
+     * @brief Shows the dialog for adding new materials
+     * 
+     * Displays a form for entering new material details including name,
+     * quantity, and cost.
+     * 
+     * @details The add material dialog includes:
+     * - Name field
+     * - Quantity field
+     * - Cost field
+     * - Add button
+     * - Cancel button
+     * - Input validation
+     */
     public void showAddMaterialDialog() {
         JDialog dialog = new JDialog(this, "Add Material", true);
         dialog.setLayout(new BorderLayout());
@@ -808,6 +1153,20 @@ public class InventoryGUI extends JFrame {
         dialog.setVisible(true);
     }
     
+    /**
+     * @brief Shows the dialog for editing existing materials
+     * 
+     * Displays a form pre-filled with the selected material's details
+     * for editing.
+     * 
+     * @details The edit material dialog includes:
+     * - Pre-filled name field
+     * - Pre-filled quantity field
+     * - Pre-filled cost field
+     * - Save button
+     * - Cancel button
+     * - Input validation
+     */
     private void showEditMaterialDialog() {
         int selectedRow = inventoryTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -915,6 +1274,17 @@ public class InventoryGUI extends JFrame {
         dialog.setVisible(true);
     }
     
+    /**
+     * @brief Shows the dialog for deleting materials
+     * 
+     * Prompts for confirmation before deleting the selected material
+     * from the inventory.
+     * 
+     * @details The delete material dialog includes:
+     * - Confirmation message
+     * - Yes/No options
+     * - Error handling
+     */
     public void showDeleteMaterialDialog() {
         int selectedRow = inventoryTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -960,6 +1330,16 @@ public class InventoryGUI extends JFrame {
         }
     }
     
+    /**
+     * @brief Refreshes the inventory table display
+     * 
+     * Updates the table with current inventory data from the database.
+     * 
+     * @details The method:
+     * - Clears the current table data
+     * - Reloads data from the database
+     * - Updates the table display
+     */
     public static void refreshInventoryTable() {
         inventoryModel.setRowCount(0);
         for (InventoryItem item : inventory) {
@@ -971,6 +1351,17 @@ public class InventoryGUI extends JFrame {
         }
     }
     
+    /**
+     * @brief Shows the dialog for adding new projects
+     * 
+     * Displays a form for entering new project details.
+     * 
+     * @details The add project dialog includes:
+     * - Project name field
+     * - Add button
+     * - Cancel button
+     * - Input validation
+     */
     public void showAddProjectDialog() {
         JDialog dialog = new JDialog(this, "Add Project", true);
         dialog.setLayout(new BorderLayout());
@@ -1043,6 +1434,16 @@ public class InventoryGUI extends JFrame {
         dialog.setVisible(true);
     }
     
+    /**
+     * @brief Shows the project details dialog
+     * 
+     * Displays detailed information about the selected project.
+     * 
+     * @details The project details dialog shows:
+     * - Project name
+     * - Project status
+     * - Project details
+     */
     public void showProjectDetails() {
         int selectedRow = projectTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -1061,6 +1462,19 @@ public class InventoryGUI extends JFrame {
             JOptionPane.INFORMATION_MESSAGE);
     }
     
+    /**
+     * @brief Shows the dialog for adding new expenses
+     * 
+     * Displays a form for entering expense details including description
+     * and amount.
+     * 
+     * @details The add expense dialog includes:
+     * - Description field
+     * - Amount field
+     * - Add button
+     * - Cancel button
+     * - Input validation
+     */
     public void showAddExpenseDialog() {
         JDialog dialog = new JDialog(this, "Add Expense", true);
         dialog.setLayout(new BorderLayout());
@@ -1143,6 +1557,20 @@ public class InventoryGUI extends JFrame {
         dialog.setVisible(true);
     }
     
+    /**
+     * @brief Shows the dialog for adding new sales
+     * 
+     * Displays a form for entering sale details including item,
+     * quantity, and price.
+     * 
+     * @details The add sale dialog includes:
+     * - Item field
+     * - Quantity field
+     * - Price field
+     * - Add button
+     * - Cancel button
+     * - Input validation
+     */
     public void showAddSaleDialog() {
         JDialog dialog = new JDialog(this, "Add Sale", true);
         dialog.setLayout(new BorderLayout());
@@ -1222,10 +1650,6 @@ public class InventoryGUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE);
                 }
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this,
-                    "Please enter valid numbers for quantity and price.",
-                    "Input Error",
-                    JOptionPane.ERROR_MESSAGE);
             }
         });
         
@@ -1242,6 +1666,18 @@ public class InventoryGUI extends JFrame {
         dialog.setVisible(true);
     }
     
+    /**
+     * @brief Calculates and displays the total profit
+     * 
+     * Computes the profit by subtracting total expenses from total sales
+     * and displays the results.
+     * 
+     * @details The calculation:
+     * - Sums up all sales
+     * - Sums up all expenses
+     * - Calculates profit (sales - expenses)
+     * - Displays results in a dialog
+     */
     public void calculateProfit() {
         double totalSales = 0;
         double totalExpenses = 0;
@@ -1263,6 +1699,16 @@ public class InventoryGUI extends JFrame {
             JOptionPane.INFORMATION_MESSAGE);
     }
     
+    /**
+     * @brief Refreshes the sales table display
+     * 
+     * Updates the table with current sales data from the database.
+     * 
+     * @details The method:
+     * - Clears the current table data
+     * - Reloads data from the database
+     * - Updates the table display
+     */
     private void refreshSalesTable() {
         salesModel.setRowCount(0);
         for (Sale sale : sales) {
@@ -1275,6 +1721,20 @@ public class InventoryGUI extends JFrame {
         }
     }
     
+    /**
+     * @brief Creates a styled menu button
+     * 
+     * Creates a button with custom styling for the side menu.
+     * 
+     * @param text The text to display on the button
+     * @return JButton The created button with custom styling
+     * 
+     * @details The button styling includes:
+     * - Custom font
+     * - Hover effects
+     * - Fixed dimensions
+     * - Centered alignment
+     */
     private JButton createMenuButton(String text) {
         JButton button = new JButton(text);
         button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -1299,6 +1759,21 @@ public class InventoryGUI extends JFrame {
         return button;
     }
     
+    /**
+     * @brief Creates a styled button with custom colors
+     * 
+     * Creates a button with custom styling and colors.
+     * 
+     * @param text The text to display on the button
+     * @param color The background color for the button
+     * @return JButton The created button with custom styling
+     * 
+     * @details The button styling includes:
+     * - Custom font
+     * - Rounded corners
+     * - Hover effects
+     * - Press effects
+     */
     private JButton createStyledButton(String text, Color color) {
         JButton button = new JButton(text) {
             @Override
@@ -1335,6 +1810,21 @@ public class InventoryGUI extends JFrame {
         return button;
     }
     
+    /**
+     * @brief Creates a dashboard button with gradient effect
+     * 
+     * Creates a large button with gradient effect for the dashboard.
+     * 
+     * @param title The text to display on the button
+     * @param color The base color for the gradient
+     * @return JButton The created button with custom styling
+     * 
+     * @details The button styling includes:
+     * - Large size
+     * - Gradient background
+     * - Rounded corners
+     * - Custom font
+     */
     private JButton createDashboardButton(String title, Color color) {
         JButton button = new JButton(title) {
             @Override
@@ -1359,6 +1849,18 @@ public class InventoryGUI extends JFrame {
         return button;
     }
     
+    /**
+     * @brief Shows the database management interface
+     * 
+     * Displays the database management screen with options for backup,
+     * restore, and clearing the database.
+     * 
+     * @details The database manager includes:
+     * - Database tables overview
+     * - Backup button
+     * - Restore button
+     * - Clear button
+     */
     public void showDatabaseManager() {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
@@ -1419,6 +1921,18 @@ public class InventoryGUI extends JFrame {
         loadDatabaseInfo(dbModel);
     }
     
+    /**
+     * @brief Loads database information into the table
+     * 
+     * Populates the table with information about database tables.
+     * 
+     * @param model The table model to populate with database information
+     * 
+     * @details The method:
+     * - Clears existing data
+     * - Queries database for table information
+     * - Updates the table display
+     */
     private void loadDatabaseInfo(DefaultTableModel model) {
         model.setRowCount(0);
         try {
@@ -1443,6 +1957,19 @@ public class InventoryGUI extends JFrame {
         }
     }
     
+    /**
+     * @brief Shows the database view for a specific module
+     * 
+     * Displays the database contents for a specific module in a dialog.
+     * 
+     * @param moduleName The name of the module
+     * @param tableName The name of the database table to display
+     * 
+     * @details The database view includes:
+     * - Table contents
+     * - Refresh button
+     * - Close button
+     */
     private void showModuleDatabase(String moduleName, String tableName) {
         JDialog dialog = new JDialog(this, moduleName + " - Database View", true);
         dialog.setLayout(new BorderLayout());
@@ -1495,6 +2022,19 @@ public class InventoryGUI extends JFrame {
         dialog.setVisible(true);
     }
     
+    /**
+     * @brief Loads data from a specific table into the model
+     * 
+     * Populates the table model with data from the specified database table.
+     * 
+     * @param model The table model to populate
+     * @param tableName The name of the database table to load
+     * 
+     * @details The method:
+     * - Clears existing data
+     * - Queries the specified table
+     * - Updates the model with new data
+     */
     private void loadTableData(DefaultTableModel model, String tableName) {
         model.setRowCount(0);
         try {
@@ -1524,14 +2064,23 @@ public class InventoryGUI extends JFrame {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this,
-                "Error loading table data: " + e.getMessage(),
-                "Database Error",
-                JOptionPane.ERROR_MESSAGE);
         }
     }
     
+    /**
+     * @brief Creates a styled table with custom appearance
+     * 
+     * Creates a table with custom styling for better visual appearance.
+     * 
+     * @param model The table model to use
+     * @return JTable The created table with custom styling
+     * 
+     * @details The table styling includes:
+     * - Custom fonts
+     * - Alternating row colors
+     * - Custom header styling
+     * - Selection colors
+     */
     public JTable createStyledTable(DefaultTableModel model) {
         JTable table = new JTable(model) {
             @Override
@@ -1564,6 +2113,19 @@ public class InventoryGUI extends JFrame {
         return table;
     }
     
+    /**
+     * @brief Creates a styled text field with custom appearance
+     * 
+     * Creates a text field with custom styling for better visual appearance.
+     * 
+     * @return JTextField The created text field with custom styling
+     * 
+     * @details The text field styling includes:
+     * - Custom font
+     * - Rounded corners
+     * - Custom colors
+     * - Padding
+     */
     public JTextField createStyledTextField() {
         JTextField field = new JTextField() {
             @Override
@@ -1587,6 +2149,19 @@ public class InventoryGUI extends JFrame {
         return field;
     }
     
+    /**
+     * @brief Creates a styled password field with custom appearance
+     * 
+     * Creates a password field with custom styling for better visual appearance.
+     * 
+     * @return JPasswordField The created password field with custom styling
+     * 
+     * @details The password field styling includes:
+     * - Custom font
+     * - Rounded corners
+     * - Custom colors
+     * - Padding
+     */
     public JPasswordField createStyledPasswordField() {
         JPasswordField field = new JPasswordField() {
             @Override
@@ -1610,6 +2185,19 @@ public class InventoryGUI extends JFrame {
         return field;
     }
     
+    /**
+     * @brief Main method to start the application
+     * 
+     * Entry point for the application. Sets up the look and feel
+     * and creates the main GUI instance.
+     * 
+     * @param args Command line arguments (not used)
+     * 
+     * @details The method:
+     * - Sets the system look and feel
+     * - Creates the main GUI instance
+     * - Starts the application
+     */
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

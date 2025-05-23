@@ -200,17 +200,14 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowEditMaterialDialog_DoesNotThrow() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Örnek envanter verisi ve tablo setup
         gui.inventory = new ArrayList<>();
         gui.inventory.add(new InventoryItem("TestMaterial", 10, 20.0));
 
-        // JTable ve model oluştur
         gui.inventoryTable = new JTable();
         DefaultTableModel model = new DefaultTableModel(new String[]{"Name", "Quantity", "Cost"}, 0);
         gui.inventoryTable.setModel(model);
         model.addRow(new Object[]{"TestMaterial", 10, 20.0});
 
-        // Seçimi ayarla
         gui.inventoryTable.setRowSelectionInterval(0, 0);
 
         gui.showEditMaterialDialog();
@@ -220,35 +217,25 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowMaterialInventory_DoesNotThrow() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
-
-        // Gerekli sabitleri tanımla (varsayılan renkler ile)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PRIMARY = Color.LIGHT_GRAY;
         gui.MODERN_TEXT = Color.BLACK;
         gui.TABLE_COLOR = Color.WHITE;
 
-        // En azından boş inventory listesi
         gui.inventory = new ArrayList<>();
 
-        // Test: sadece hata fırlatmıyor mu kontrol ediyoruz
         gui.showMaterialInventory();
     }
 
     @Test
     public void testShowAddMaterialDialog_DoesNotThrow() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
-
-        // Gerekli sabit renkleri varsayılan değerlerle tanımlıyoruz
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PANEL = Color.LIGHT_GRAY;
         gui.MODERN_TEXT = Color.BLACK;
-
-        // Test sırasında dialog açılacak, bunu engellemek istemiyorsak visible olacak
-        // Burada sadece hata fırlatmadığını kontrol ediyoruz
         gui.showAddMaterialDialog();
     }
 
@@ -256,13 +243,10 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowDeleteMaterialDialog_NoSelection() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Tabloyu başlat
         String[] columns = {"Name", "Quantity", "Cost"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         JTable table = new JTable(model);
         gui.inventoryTable = table;
-
-        // Herhangi bir seçim yapılmamışken çağır
         gui.showDeleteMaterialDialog();
     }
 
@@ -270,54 +254,37 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowSalesTracker_DoesNotThrow() throws Exception {
     	InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
-
-        // Gerekli sabitleri tanımla (örnek renklerle)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_TEXT = Color.BLACK;
-
-        // Test: sadece hata fırlatmıyor mu kontrol ediyoruz (GUI thread içinde çalıştır)
         SwingUtilities.invokeAndWait(() -> gui.showSalesTracker());
     }
     
     @Test
     public void testShowExpenseLogging_DoesNotThrow() throws Exception {
     	InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
-
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
-
-        // Gerekli sabitleri tanımla (örnek renklerle)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_ACCENT = Color.LIGHT_GRAY;
         gui.MODERN_TEXT = Color.BLACK;
-
-        // Test: sadece hata fırlatmıyor mu kontrol ediyoruz (GUI thread içinde çalıştır)
         SwingUtilities.invokeAndWait(() -> gui.showExpenseLogging());
     }
 
     @Test
     public void testShowLoginPanel_DoesNotThrow() throws Exception {
     	InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
-
-        // Gerekli panelleri ve bileşenleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
-        gui.sideMenuPanel = new JPanel(); // Bu metodda kullanılmıyor ama diğer metotlarda var, sorun olmaz.
-
-        // Gerekli sabitleri tanımla (örnek renklerle)
+        gui.sideMenuPanel = new JPanel(); 
         gui.MODERN_BACKGROUND = Color.WHITE;
 
-        // JTextField ve JPasswordField'ları başlat
         gui.usernameField = new JTextField();
         gui.passwordField = new JPasswordField();
 
-        // GUI metodu EDT içinde çağır
         SwingUtilities.invokeAndWait(() -> gui.showLoginPanel());
     }
 
@@ -325,15 +292,11 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowRegisterPanel_DoesNotThrow() throws Exception {
     	InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
-
-        // Gerekli sabitleri tanımla (örnek renklerle)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PRIMARY = Color.BLACK;
 
-        // GUI metodu EDT içinde çağır
         SwingUtilities.invokeAndWait(() -> gui.showRegisterPanel());
     }
 
@@ -341,20 +304,14 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowMainMenu_DoesNotThrow() throws Exception {
     	InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.sideMenuPanel = new JPanel();
 
-        // Gerekli sabitleri tanımla (örnek renklerle)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PRIMARY = Color.BLACK;
         gui.MODERN_SECONDARY = Color.GRAY;
         gui.MODERN_ACCENT = Color.LIGHT_GRAY;
-
-        // currentUser örnek ataması
         gui.currentUser = "TestUser";
-
-        // GUI metodu EDT içinde çağır
         SwingUtilities.invokeAndWait(() -> gui.showMainMenu());
     }
 
@@ -362,18 +319,13 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowModule_DoesNotThrow() throws Exception {
     	InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
-
-        // Gerekli sabitleri tanımla (örnek renklerle)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PRIMARY = Color.BLACK;
         gui.MODERN_SECONDARY = Color.GRAY;
         gui.MODERN_ACCENT = Color.LIGHT_GRAY;
-
-        // Modülleri test et
         SwingUtilities.invokeAndWait(() -> {
             gui.showModule("Material Inventory");
             gui.showModule("Project Tracking");
@@ -386,40 +338,30 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowAddProjectDialog_DoesNotThrow() throws Exception {
     	InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Gerekli panelleri elle başlat ve sabitleri ayarla
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PANEL = Color.LIGHT_GRAY;
         gui.MODERN_TEXT = Color.BLACK;
-
-        // Boş model hazırla (insert sonrası ekleme için)
         gui.projectModel = new DefaultTableModel(new String[]{"Project Name"}, 0);
 
-        // EDT içinde dialog'u çağır
         SwingUtilities.invokeAndWait(() -> gui.showAddProjectDialog());
     }
 
     @Test
     public void testShowProjectDetails_DoesNotThrow() {
     	InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
-
-        // Gerekli panelleri ve model nesnelerini hazırla
         gui.projectModel = new DefaultTableModel(new String[]{"Project Name"}, 0);
         gui.projectTable = new JTable(gui.projectModel);
 
-        // GUI panellerini elle oluştur
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
         gui.MODERN_BACKGROUND = Color.WHITE;
-
-        // Test 1: Satır seçilmemiş durumda - uyarı mesajı çıkar ama hata fırlatmaz
         gui.projectTable.clearSelection();
         gui.showProjectDetails();
 
-        // Test 2: Bir satır seçilmiş durumda
         gui.projectModel.addRow(new Object[]{"Test Project"});
         gui.projectTable.setRowSelectionInterval(0, 0);
         gui.showProjectDetails();
@@ -429,18 +371,13 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowAddExpenseDialog_DoesNotThrow() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
 
-        // Gerekli sabitleri tanımla (varsayılan renkler ile)
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PANEL = Color.LIGHT_GRAY;
         gui.MODERN_TEXT = Color.BLACK;
-
-        // Test: sadece hata fırlatmadığını kontrol ediyoruz
-        // (Dialog UI ve event'ler GUI etkileşimi gerektirir, burada sadece çağırıyoruz)
         gui.showAddExpenseDialog();
     }
     
@@ -448,7 +385,6 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowModuleDatabase_DoesNotThrow() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Gerekli panelleri elle başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
@@ -458,9 +394,6 @@ public class InventoryGUIWindowBuilderTest {
         gui.TABLE_TEXT_COLOR = Color.BLACK;
         gui.TABLE_HEADER_COLOR = Color.DARK_GRAY;
         
-
-        // Test: sadece hata fırlatmadığını kontrol ediyoruz
-        // (Dialog UI ve event'ler GUI etkileşimi gerektirir, burada sadece çağırıyoruz)
         gui.showModuleDatabase(null, null);
     }
     
@@ -468,12 +401,10 @@ public class InventoryGUIWindowBuilderTest {
     public void testShowAddSaleDialog_DoesNotThrow() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Gerekli panelleri başlat
         gui.mainPanel = new JPanel(new BorderLayout());
         gui.contentPanel = new JPanel();
         gui.sideMenuPanel = new JPanel();
 
-        // Renk sabitlerini tanımla
         gui.MODERN_BACKGROUND = Color.WHITE;
         gui.MODERN_PANEL = Color.LIGHT_GRAY;
         gui.MODERN_TEXT = Color.BLACK;
@@ -486,11 +417,9 @@ public class InventoryGUIWindowBuilderTest {
     public void testRefreshSalesTable_DoesNotThrow() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Gerekli objeleri başlat
         gui.sales = new ArrayList<>();
         gui.salesModel = new DefaultTableModel(new String[]{"Item", "Quantity", "Price", "Total"}, 0);
 
-        // Örnek veri ekle
         gui.sales.add(new Sale("Item1", 2, 50.0));
         gui.sales.add(new Sale("Item2", 1, 100.0));
 
@@ -501,11 +430,8 @@ public class InventoryGUIWindowBuilderTest {
     public void testCalculateProfit_DoesNotThrow() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Satış ve gider listelerini başlat
         gui.sales = new ArrayList<>();
         gui.expenses = new ArrayList<>();
-
-        // Örnek satış ve gider verileri ekle
         gui.sales.add(new Sale("Item1", 2, 50.0));
         gui.sales.add(new Sale("Item2", 1, 100.0));
         gui.expenses.add(new Expense("Expense1", 30.0));
@@ -518,11 +444,8 @@ public class InventoryGUIWindowBuilderTest {
     public void testLoadTableData_DoesNotThrow() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Boş bir tablo modeli oluştur
         DefaultTableModel model = new DefaultTableModel();
-
-        // Geçerli bir tablo adı ver (var olan bir tablo olmalı, yoksa hata çıkar)
-        String tableName = "projects"; // ya da veritabanındaki başka bir tablo adı
+        String tableName = "projects"; 
 
         gui.loadTableData(model, tableName);
     }
@@ -536,23 +459,20 @@ public class InventoryGUIWindowBuilderTest {
     public void testCreateStyledTable_DoesNotThrow() {
         InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder();
 
-        // Örnek tablo modeli oluştur
         String[] columns = {"Column1", "Column2"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
 
         {
             JTable table = gui.createStyledTable(model);
-            assertNotNull(table); // Tablo null değilse başarılı
+            assertNotNull(table); 
         };
     }
     
     @Test
     public void testRefreshInventoryTable_DoesNotThrow() {
-        // Öncelikle inventory ve inventoryModel static alanların uygun şekilde hazırlanması gerekir
         InventoryGUIWindowBuilder.inventory = new ArrayList<>();
         InventoryGUIWindowBuilder.inventoryModel = new DefaultTableModel(new String[]{"Name", "Quantity", "Cost"}, 0);
 
-        // Örnek veri ekleyelim (opsiyonel)
         InventoryGUIWindowBuilder.inventory.add(new InventoryItem("Test Item", 10, 15.5));
 
         InventoryGUIWindowBuilder.refreshInventoryTable();
@@ -563,19 +483,16 @@ public class InventoryGUIWindowBuilderTest {
      
             InventoryGUI gui = new InventoryGUI();
 
-            // GUI bileşenleri oluştur
             gui.MODERN_BACKGROUND = Color.WHITE;
             gui.MODERN_PANEL = Color.LIGHT_GRAY;
             gui.MODERN_TEXT = Color.BLACK;
 
-            gui.sales = new ArrayList<>(); // << ÖNEMLİ: boş liste oluşturulmalı
+            gui.sales = new ArrayList<>(); 
             gui.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             gui.setVisible(true);
 
-            // Dialogu aç
             gui.showAddSaleDialog();
 
-            // Aktif dialogu bul
             JDialog dialog = null;
             for (Window w : Window.getWindows()) {
                 if (w instanceof JDialog && w.isVisible()) {
@@ -584,14 +501,9 @@ public class InventoryGUIWindowBuilderTest {
                 }
             }
 
-
-            // TextField ve butonları bul
             JTextField itemField = null, quantityField = null, priceField = null;
             JButton addButton = null;
 
-            
-
-            // Bekleyelim
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -617,19 +529,15 @@ public class InventoryGUIWindowBuilderTest {
     @Test
     public void testCreateMenuButton_HoverEffect() {
         // Arrange
-        InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder(); // Sınıf adını seninkine göre değiştir
+        InventoryGUIWindowBuilder gui = new InventoryGUIWindowBuilder(); 
         JButton button = gui.createMenuButton("Test");
-
-        // Button görünür olmalı ki bazı UI olayları işlesin
         JFrame frame = new JFrame();
         frame.add(button);
         frame.pack();
-        frame.setVisible(true); // Zorunlu olabilir
+        frame.setVisible(true); 
 
-        // Orijinal renk
         Color originalColor = button.getBackground();
 
-        // Act - MouseEntered tetikle
         MouseEvent enterEvent = new MouseEvent(
             button, MouseEvent.MOUSE_ENTERED,
             System.currentTimeMillis(), 0, 0, 0, 0, false
@@ -638,11 +546,9 @@ public class InventoryGUIWindowBuilderTest {
             ml.mouseEntered(enterEvent);
         }
 
-        // Assert - Hover rengi
         assertEquals("Background should change on hover",
             new Color(41, 128, 185), button.getBackground());
 
-        // Act - MouseExited tetikle
         MouseEvent exitEvent = new MouseEvent(
             button, MouseEvent.MOUSE_EXITED,
             System.currentTimeMillis(), 0, 0, 0, 0, false
@@ -651,11 +557,10 @@ public class InventoryGUIWindowBuilderTest {
             ml.mouseExited(exitEvent);
         }
 
-        // Assert - Renk eski haline dönmeli
         assertEquals("Background should revert on exit",
             originalColor, button.getBackground());
 
-        frame.dispose(); // test sonunda kapat
+        frame.dispose(); 
     }
     
   
